@@ -42,31 +42,39 @@ function Header({ onToggleSidebar }) {
     };
 
     return (
-        // Header principal: fondo blanco, sombra sutil, fijo en la parte superior, z-index alto
-        // Padding responsivo y un margen izquierdo en pantallas grandes para compensar el sidebar fijo
-        <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-50 py-3 px-4 flex items-center justify-between lg:justify-start lg:pl-64 transition-all duration-300 ease-in-out">
-            {/* Botón de hamburguesa para abrir el Sidebar en pantallas pequeñas */}
-            <button
-                className="lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors duration-200"
-                onClick={onToggleSidebar}
-                aria-label="Toggle navigation"
-            >
-                <svg className="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+        // Header principal: fondo blanco, sombra sutil, fijo en la parte superior, z-index alto.
+        // La clase 'justify-between' es el comportamiento por defecto para móvil.
+        <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-50 py-3 px-4 flex items-center justify-between transition-all duration-300 ease-in-out">
 
-            {/* Logo de la marca: icono y texto, con color primario */}
-            <Link className="flex items-center text-gray-800 text-2xl font-bold ml-4 lg:ml-0 transition-colors duration-200 hover:text-primary-700" to="/dashboard">
+            {/* Contenedor para el botón de hamburguesa y el logo en MÓVILES (oculto en LG) */}
+            <div className="flex items-center lg:hidden">
+                {/* Botón de hamburguesa para abrir el Sidebar en pantallas pequeñas */}
+                <button
+                    className="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors duration-200"
+                    onClick={onToggleSidebar}
+                    aria-label="Toggle navigation"
+                >
+                    <svg className="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                {/* Logo de la marca para MÓVILES (se mantiene en el flujo normal) */}
+                <Link className="flex items-center text-gray-800 text-2xl font-bold ml-4 transition-colors duration-200 hover:text-primary-700" to="/dashboard">
+                    <i className="fas fa-graduation-cap mr-2 text-primary-600 text-3xl" aria-hidden="true"></i>
+                    EduGestión 360
+                </Link>
+            </div>
+
+            {/* Logo de la marca para ESCRITORIO (visible solo en LG y arriba) */}
+            {/* Posicionado absolutamente para quedar en el espacio del sidebar (w-64 del sidebar) */}
+            <Link className="absolute left-0 top-0 h-full w-64 hidden lg:flex items-center justify-center text-gray-800 text-2xl font-bold transition-colors duration-200 hover:text-primary-700" to="/dashboard">
                 <i className="fas fa-graduation-cap mr-2 text-primary-600 text-3xl" aria-hidden="true"></i>
                 EduGestión 360
             </Link>
 
-            {/* Espaciador flexible para empujar los elementos de la derecha */}
-            <div className="flex-grow hidden lg:block"></div>
-
-            {/* Menú de navegación a la derecha (enlaces y dropdowns) */}
-            <div className="flex items-center space-x-4 ml-auto">
+            {/* Contenedor del contenido del header a la derecha */}
+            {/* En desktop, 'ml-auto' lo empuja a la derecha, y 'lg:pl-64' lo desplaza para evitar superponerse al logo absoluto de escritorio */}
+            <div className="flex items-center space-x-4 ml-auto lg:ml-auto lg:pl-64">
                 <ul className="flex items-center space-x-4">
                     {/* Enlaces de navegación principales (ocultos en móvil) */}
                     <li className="hidden lg:block">
@@ -100,8 +108,8 @@ function Header({ onToggleSidebar }) {
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Portal>
-                            <DropdownMenu.Content className="bg-white rounded-lg shadow-lg p-2 min-w-[220px] z-[1000] animate-fadeIn border border-gray-100" align="end" sideOffset={8}> {/* Borde, sombra más suave */}
-                                <DropdownMenu.Label className="px-3 py-2 text-xs text-gray-500 border-b border-gray-100 mb-1 font-semibold">Cambiar Rol</DropdownMenu.Label> {/* Separador */}
+                            <DropdownMenu.Content className="bg-white rounded-lg shadow-lg p-2 min-w-[220px] z-[1000] animate-fadeIn border border-gray-100" align="end" sideOffset={8}>
+                                <DropdownMenu.Label className="px-3 py-2 text-xs text-gray-500 border-b border-gray-100 mb-1 font-semibold">Cambiar Rol</DropdownMenu.Label>
                                 <DropdownMenu.Item asChild>
                                     <button className="flex items-center w-full px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 cursor-pointer transition-colors duration-150">
                                         <i className="fas fa-user-graduate mr-3 text-lg"></i> Estudiante / Padre
@@ -119,7 +127,7 @@ function Header({ onToggleSidebar }) {
                                 </DropdownMenu.Item>
                                 <DropdownMenu.Separator className="h-[1px] bg-gray-200 my-1" />
                                 <DropdownMenu.Item asChild>
-                                    <button className="flex items-center w-full px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 cursor-pointer transition-colors duration-150" onClick={handleLogout}> {/* Color de hover para logout */}
+                                    <button className="flex items-center w-full px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 cursor-pointer transition-colors duration-150" onClick={handleLogout}>
                                         <i className="fas fa-sign-out-alt mr-3 text-lg"></i> Cerrar Sesión
                                     </button>
                                 </DropdownMenu.Item>
@@ -134,9 +142,9 @@ function Header({ onToggleSidebar }) {
                                 className="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 relative transition-colors duration-200"
                                 aria-label="Ver notificaciones"
                             >
-                                <i className="fas fa-bell text-gray-700 text-xl"></i> {/* Icono más grande */}
+                                <i className="fas fa-bell text-gray-700 text-xl"></i>
                                 {notifications.length > 0 && (
-                                    <span className="absolute -top-1 -right-1 bg-warning text-white text-xs font-bold px-1.5 py-0.5 rounded-full border-2 border-white"> {/* Borde blanco para destacar */}
+                                    <span className="absolute -top-1 -right-1 bg-warning text-white text-xs font-bold px-1.5 py-0.5 rounded-full border-2 border-white">
                                         {notifications.length}
                                         <span className="sr-only">notificaciones sin leer</span>
                                     </span>
@@ -151,7 +159,7 @@ function Header({ onToggleSidebar }) {
                                     notifications.map(notif => (
                                         <DropdownMenu.Item key={notif.id} asChild>
                                             <a className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150" href="#">
-                                                <strong className="block mb-0.5">{notif.message}</strong> {/* Espaciado */}
+                                                <strong className="block mb-0.5">{notif.message}</strong>
                                                 <small className="text-gray-500 text-xs">{notif.time}</small>
                                             </a>
                                         </DropdownMenu.Item>
