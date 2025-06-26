@@ -1,21 +1,69 @@
 // src/components/shared/ChartWrapper.jsx
 import React from 'react';
+import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2'; // Importamos los tipos de gráficos de react-chartjs-2
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement, // Para gráficos de pastel/donuts
+  PointElement, // Para gráficos de línea
+  LineElement, // Para gráficos de línea
+  Filler // Opcional: para áreas sombreadas en gráficos de línea
+} from 'chart.js';
 
-function ChartWrapper({ title, type, className }) {
-  // Aquí iría la lógica para renderizar el gráfico según el 'type'
-  // Por ahora, es un placeholder
+// **REGISTRA LOS COMPONENTES NECESARIOS DE CHART.JS**
+// Esto es crucial para que Chart.js sepa qué elementos de gráfico debe renderizar.
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Filler
+);
+
+const ChartWrapper = ({ title, description, chartType, chartData, chartOptions }) => {
+  let ChartComponent;
+
+  // Selecciona el componente de gráfico basado en el tipo prop
+  switch (chartType) {
+    case 'bar':
+      ChartComponent = Bar;
+      break;
+    case 'line':
+      ChartComponent = Line;
+      break;
+    case 'pie':
+      ChartComponent = Pie;
+      break;
+    case 'doughnut': // Añadimos soporte para gráficos de dona
+      ChartComponent = Doughnut;
+      break;
+    default:
+      ChartComponent = Bar; // Valor por defecto si no se especifica un tipo
+  }
 
   return (
-    // Contenedor principal del gráfico con estilo de tarjeta (similar a Card.jsx)
-    <div className={`bg-white rounded-xl shadow-md p-6 ${className || ''} transition-all duration-300 hover:shadow-lg`}>
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">{title}</h3>
-      {/* Placeholder para el área del gráfico, con un fondo sutil y texto centrado */}
-      <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg text-gray-400 text-base border border-gray-200">
-        {/* Este es un placeholder. Aquí iría el componente de tu gráfico real. */}
-        <p className="text-center">Gráfico de {type} iría aquí.</p>
+    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
+      {description && <p className="text-gray-600 mb-4">{description}</p>}
+      <div className="relative h-80 w-full"> {/* Contenedor con altura y ancho fijos para el gráfico */}
+        {chartData ? (
+          <ChartComponent data={chartData} options={chartOptions} />
+        ) : (
+          <p className="text-center text-gray-500 py-10">Cargando datos del gráfico...</p>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default ChartWrapper;
