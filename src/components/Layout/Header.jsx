@@ -82,7 +82,7 @@ function Header({ onToggleSidebar }) {
                                 aria-label="Abrir menú de perfil"
                             >
                                 <img
-                                    src="https://via.placeholder.com/30"
+                                    src="https://via.placeholder.com/30x30/4361ee/ffffff?text=AV"
                                     alt="Avatar"
                                     className="rounded-full mr-2"
                                     width="30"
