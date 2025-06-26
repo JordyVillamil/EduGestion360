@@ -1,21 +1,18 @@
 // src/components/shared/Card.jsx
 import React from 'react';
 
-// NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import './Card.css';)
-// Todos los estilos ahora se manejan con Tailwind CSS.
-
 function Card({ title, children, className, bodyClassName }) {
   return (
-    // Contenedor principal de la tarjeta con sombra, bordes redondeados y fondo blanco
-    <div className={`bg-white rounded-lg shadow-md ${className || ''}`}>
+    // Contenedor principal de la tarjeta con fondo blanco, bordes redondeados y una sombra sutil
+    <div className={`bg-white rounded-xl shadow-md ${className || ''} transition-all duration-300 hover:shadow-lg`}> {/* Sombra mejorada y transición */}
       {title && (
-        // Encabezado de la tarjeta con padding y borde inferior
-        <div className="p-4 border-b border-gray-200">
+        // Encabezado de la tarjeta con padding, borde inferior y texto estilizado
+        <div className="p-5 border-b border-gray-200"> {/* Mayor padding */}
           <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
         </div>
       )}
-      {/* Cuerpo de la tarjeta con padding, usa bodyClassName para estilos adicionales en el cuerpo */}
-      <div className={`p-4 ${bodyClassName || ''}`}>
+      {/* Cuerpo de la tarjeta con padding, usando bodyClassName para estilos adicionales */}
+      <div className={`p-5 ${bodyClassName || ''}`}> {/* Mayor padding */}
         {children} {/* Contenido que se pasa al componente Card */}
       </div>
     </div>

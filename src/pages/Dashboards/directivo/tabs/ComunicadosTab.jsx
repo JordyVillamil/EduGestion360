@@ -1,43 +1,58 @@
 // src/pages/Dashboards/directivo/tabs/ComunicadosTab.jsx
 import React from 'react';
-// Asegúrate que esta ruta sea correcta para tu componente Card
-import Card from '../../../../components/shared/Card'; // Añadimos un nivel más de '..'
+import Card from '../../../../components/shared/Card'; // Ensure this path is correct
 
-// NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import './ComunicadosTab.css';)
-// Todos los estilos ahora se manejan con Tailwind CSS.
-
-const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => { // Si necesitas props aquí, añádelas
+const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => {
     return (
-        // Reemplaza 'tab-pane fade show active' con clases Tailwind para un contenedor de contenido
-        <div className="p-4"> {/* Agrega un padding al contenido de la pestaña */}
-            <div className="flex flex-wrap -mx-2"> {/* Contenedor de fila, usa flex-wrap para responsividad, -mx-2 compensa el px-2 en las columnas */}
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0"> {/* Columnas de 50% de ancho en md y arriba, con padding horizontal */}
+        <div className="p-4">
+            {/* Filter Section */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">Filtros de Comunicados</h3>
+                <div className="flex flex-wrap items-center gap-6">
+                    <div>
+                        <label htmlFor="communicationTypeFilter" className="block text-sm font-medium text-gray-700 mb-1">Tipo:</label>
+                        <select id="communicationTypeFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
+                            <option>Todos</option>
+                            <option>Noticia</option>
+                            <option>Recordatorio</option>
+                            <option>Urgente</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="communicationDateFilter" className="block text-sm font-medium text-gray-700 mb-1">Fecha:</label>
+                        <input type="date" id="communicationDateFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200" />
+                    </div>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200">Aplicar Filtros</button>
+                </div>
+            </div>
+
+            <div className="flex flex-wrap -mx-3">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <Card title="Nueva Notificación">
-                        {/* Formulario de nueva notificación con clases Tailwind */}
-                        <form className="space-y-4">
+                        <form className="space-y-6">
                             <div>
-                                <label htmlFor="notificationTitle" className="block text-sm font-medium text-gray-700">Título</label>
+                                <label htmlFor="notificationTitle" className="block text-sm font-medium text-gray-700 mb-2">Título</label>
                                 <input
                                     type="text"
                                     id="notificationTitle"
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    className="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 placeholder-gray-400 transition-all duration-200"
                                     placeholder="Asunto del comunicado"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="notificationMessage" className="block text-sm font-medium text-gray-700">Mensaje</label>
+                                <label htmlFor="notificationMessage" className="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
                                 <textarea
                                     id="notificationMessage"
-                                    rows="4"
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    rows="5" // Increased rows for more space
+                                    className="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 placeholder-gray-400 transition-all duration-200"
                                     placeholder="Contenido del comunicado"
                                 ></textarea>
                             </div>
                             <div>
-                                <label htmlFor="notificationRecipients" className="block text-sm font-medium text-gray-700">Destinatarios</label>
+                                <label htmlFor="notificationRecipients" className="block text-sm font-medium text-gray-700 mb-2">Destinatarios</label>
                                 <select
                                     id="notificationRecipients"
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    className="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200"
                                 >
                                     <option value="">Seleccionar</option>
                                     <option value="all">Todos los usuarios</option>
@@ -46,29 +61,37 @@ const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => { // Si necesita
                                     <option value="parents">Solo Padres</option>
                                 </select>
                             </div>
-                            <button
-                                type="submit"
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                            >
-                                Enviar Comunicado
-                            </button>
+                            <div className="flex justify-end pt-2">
+                                <button
+                                    type="submit"
+                                    className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md"
+                                >
+                                    Enviar Comunicado
+                                </button>
+                            </div>
                         </form>
                     </Card>
                 </div>
-                <div className="w-full md:w-1/2 px-2">
+                <div className="w-full md:w-1/2 px-3">
                     <Card title="Notificaciones Enviadas">
-                        {/* Lista de notificaciones con estilos Tailwind (anteriormente list-group) */}
-                        <div className="divide-y divide-gray-200"> {/* Divide los elementos con un borde */}
-                            <button type="button" className="block w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-gray-800 text-sm">
-                                Recordatorio: Examen parcial - <span className="text-gray-500 text-xs">25/06/2025</span>
+                        {/* List of sent notifications with polished Tailwind styles */}
+                        <div className="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+                            <button type="button" className="block w-full text-left p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-gray-800 transition-colors duration-200">
+                                <span className="font-semibold text-lg block mb-1">Recordatorio: Examen parcial</span>
+                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-calendar-alt mr-2"></i>Para: 10° A</span>
+                                <span className="text-gray-500 text-xs block"><i className="fas fa-clock mr-2"></i>25/06/2025 - 09:00 AM</span>
                             </button>
-                            <button type="button" className="block w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-gray-800 text-sm">
-                                Reunión de padres el viernes - <span className="text-gray-500 text-xs">24/06/2025</span>
+                            <button type="button" className="block w-full text-left p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-gray-800 transition-colors duration-200">
+                                <span className="font-semibold text-lg block mb-1">Reunión de padres el viernes</span>
+                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-calendar-alt mr-2"></i>Para: Todos los padres</span>
+                                <span className="text-gray-500 text-xs block"><i className="fas fa-clock mr-2"></i>24/06/2025 - 03:00 PM</span>
                             </button>
-                            <button type="button" className="block w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-gray-800 text-sm">
-                                Cierre de calificaciones - <span className="text-gray-500 text-xs">20/06/2025</span>
+                            <button type="button" className="block w-full text-left p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-gray-800 transition-colors duration-200">
+                                <span className="font-semibold text-lg block mb-1">Cierre de calificaciones</span>
+                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-calendar-alt mr-2"></i>Para: Docentes y Directivos</span>
+                                <span className="text-gray-500 text-xs block"><i className="fas fa-clock mr-2"></i>20/06/2025 - 05:00 PM</span>
                             </button>
-                            {/* ...Mapear sobre notificaciones... */}
+                            {/* Map over notifications here */}
                         </div>
                     </Card>
                 </div>
