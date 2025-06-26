@@ -5,8 +5,6 @@ import * as Dialog from '@radix-ui/react-dialog'; // Importamos Radix Dialog
 
 function Sidebar({ isOpen, onClose }) {
     const location = useLocation();
-    // Ajustamos el isActive para que detecte si la ruta actual *comienza* con la ruta del link,
-    // útil para dashboards con sub-rutas (ej. /dashboard/estudiante/tareas)
     const isActive = (path) => location.pathname.startsWith(path);
     const userRole = localStorage.getItem('userRole') || 'estudiante';
 
@@ -14,7 +12,9 @@ function Sidebar({ isOpen, onClose }) {
         <>
             {/* Sidebar para pantallas grandes (visible en lg y arriba) */}
             {/* Ancho w-64, fondo blanco, sombra a la derecha, fijo debajo del header */}
-            <aside className="hidden lg:block w-64 bg-white shadow-lg fixed top-16 left-0 h-[calc(100vh-64px)] overflow-y-auto z-40 border-r border-gray-200 py-4">
+            {/* AÑADIDOS: rounded-lg y border border-gray-200 */}
+            <aside className="hidden lg:block w-64 bg-white shadow-lg fixed top-16 left-0 overflow-y-auto z-40 border-r border-gray-200 py-4
+                              rounded-r-lg"> {/* rounded-r-lg para redondear solo la esquina derecha */}
                 <div className="px-4">
                     <h5 className="text-lg font-bold mb-5 text-gray-700">Menú</h5>
                     <nav className="flex flex-col space-y-1">
@@ -58,11 +58,13 @@ function Sidebar({ isOpen, onClose }) {
                 </div>
             </aside>
 
-            {/* Sidebar para móviles (Radix Dialog) */}
+            {/* Sidebar para móviles (Radix Dialog) - Mantenemos h-full para el overlay */}
             <Dialog.Root open={isOpen} onOpenChange={onClose}>
                 <Dialog.Portal>
                     <Dialog.Overlay className="fixed inset-0 bg-black/50 z-[999] transition-opacity duration-300 data-[state=closed]:opacity-0 data-[state=open]:opacity-100" /> {/* Backdrop con transición */}
-                    <Dialog.Content className="fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-[1000] p-4 flex flex-col transform transition-transform duration-300 ease-in-out data-[state=closed]:-translate-x-full data-[state=open]:translate-x-0">
+                    {/* AÑADIDOS: rounded-r-lg y border border-gray-200 al Content del Dialog */}
+                    <Dialog.Content className="fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-[1000] p-4 flex flex-col transform transition-transform duration-300 ease-in-out data-[state=closed]:-translate-x-full data-[state=open]:translate-x-0
+                                            rounded-r-lg border-r border-gray-200">
                         <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
                             <Dialog.Title className="text-xl font-bold text-gray-800">Menú</Dialog.Title>
                             <Dialog.Close asChild>

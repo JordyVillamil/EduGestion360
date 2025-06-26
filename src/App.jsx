@@ -26,18 +26,21 @@ const DashboardLayout = ({ toggleSidebar, isSidebarOpen, showToast, setShowGloba
             <Header onToggleSidebar={toggleSidebar} />
 
             {/* Contenedor principal del contenido y sidebar: usa flex-grow para ocupar espacio restante */}
-            <div className="flex flex-1 pt-16"> {/* pt-16 (64px) para dejar espacio al Header fijo */}
-                {/* Sidebar: fijo, flota sobre el contenido principal */}
+            {/* pt-16 (64px) para dejar espacio al Header fijo */}
+            <div className="flex flex-1 pt-16">
+                {/* Sidebar: fijo, flota sobre el contenido principal en pantallas grandes */}
                 <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
 
                 {/* Main Content Area: se expande para llenar el espacio, con margen izquierdo en desktop para el sidebar */}
                 {/* overflow-y-auto: permite el scroll si el contenido es más largo que la pantalla */}
-                <main className="flex-1 p-6 lg:ml-64 overflow-y-auto"> {/* lg:ml-64 (256px) para el Sidebar */}
+                {/* Añadido pb-20 para asegurar espacio para el Footer. Ajusta este valor si tu Footer es más alto. */}
+                <main className="flex-1 p-6 lg:ml-64 overflow-y-auto pb-20">
                     <Outlet />
                 </main>
             </div>
 
             {/* Footer: siempre en la parte inferior */}
+            {/* Asegúrate de que el Footer no sea fijo para que el main lo empuje */}
             <Footer />
         </div>
     );
@@ -67,7 +70,18 @@ function App() {
             {showGlobalSpinner && <Spinner />}
 
             <Routes>
-                <Route path="/" element={<LoginPage setShowGlobalSpinner={setShowGlobalSpinner} showToast={showToast} />} />
+                {/* La ruta raíz redirige al login si no hay un rol de usuario, o al dashboard específico */}
+                <Route
+                    path="/"
+                    element={
+                        localStorage.getItem('userRole') ? (
+                            <Navigate to={`/dashboard/${localStorage.getItem('userRole')}`} replace />
+                        ) : (
+                            <LoginPage setShowGlobalSpinner={setShowGlobalSpinner} showToast={showToast} />
+                        )
+                    }
+                />
+                <Route path="/login" element={<LoginPage setShowGlobalSpinner={setShowGlobalSpinner} showToast={showToast} />} />
 
                 <Route element={<AuthWrapper showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />}>
                     <Route
@@ -81,12 +95,17 @@ function App() {
                             />
                         }
                     >
-                        <Route index element={<Navigate to={`/dashboard/${localStorage.getItem('userRole') || 'estudiante'}`} replace />} />
+                        {/* Redirige a la ruta específica del rol al acceder a /dashboard */}
+                        <Route
+                            index
+                            element={<Navigate to={`/dashboard/${localStorage.getItem('userRole') || 'estudiante'}`} replace />}
+                        />
 
                         <Route path="estudiante/*" element={<EstudianteDashboard showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />} />
                         <Route path="docente/*" element={<DocenteDashboard showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />} />
                         <Route path="directivo/*" element={<DirectivoDashboard showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />} />
 
+                        {/* Rutas adicionales dentro del dashboard */}
                         <Route path="mi-perfil" element={
                             <div className="bg-white p-6 rounded-lg shadow-md">
                                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Mi Perfil Detalle</h2>
@@ -119,6 +138,7 @@ function App() {
                             </div>
                         } />
 
+                        {/* Ruta para 404 dentro del dashboard */}
                         <Route path="*" element={
                             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-160px)] bg-white p-8 rounded-lg shadow-md">
                                 <h1 className="text-4xl font-bold text-gray-800 mb-4">404 - Página No Encontrada</h1>
@@ -131,6 +151,7 @@ function App() {
                     </Route>
                 </Route>
 
+                {/* Redirección para cualquier otra ruta no definida fuera del dashboard */}
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Router>
