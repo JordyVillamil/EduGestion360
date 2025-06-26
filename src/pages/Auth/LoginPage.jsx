@@ -61,26 +61,16 @@ function LoginPage({ setShowGlobalSpinner, showToast }) {
     };
 
     return (
-        // Contenedor principal de la página de login
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-            {/* Tarjeta de login */}
             <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-100 transition-all duration-300 hover:shadow-2xl">
-                {/* Logo de la marca */}
                 <a className="flex items-center justify-center text-primary-700 text-4xl font-extrabold mb-10 transition-colors duration-300 hover:text-primary-800" href="javascript:void(0)" aria-label="Ir a la página de inicio de EduGestión 360">
-                    {/* SVG del Birrete simple como logo */}
-                    <svg className="w-11 h-11 mr-3 fill-current text-primary-600" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 17L12 21L20 17V15L12 19L4 15V17Z" />
-                        <path d="M12 11L4 7L12 3L20 7L12 11Z" />
-                        <path d="M17 11.5L12 14L7 11.5" />
-                        <path d="M12 3V19" />
-                    </svg>
+                    {/* Icono original de Font Awesome: fas fa-graduation-cap */}
+                    <i className="fas fa-graduation-cap mr-3 text-blue-500 text-4xl" aria-hidden="true"></i> {/* Añadimos text-4xl para el tamaño */}
                     EduGestión 360
                 </a>
                 <h5 className="text-2xl font-semibold mb-8 text-gray-800">Bienvenido de nuevo</h5>
 
-                {/* Formulario de login */}
                 <form id="loginForm" className="space-y-6" onSubmit={handleSubmit} noValidate>
-                    {/* Campo de correo electrónico / usuario */}
                     <div className="text-left">
                         <label htmlFor="emailInput" className="block text-gray-700 text-sm font-medium mb-2">Correo electrónico / Usuario</label>
                         <input
@@ -94,13 +84,12 @@ function LoginPage({ setShowGlobalSpinner, showToast }) {
                             onChange={(e) => setEmailOrUsername(e.target.value)}
                         />
                     </div>
-                    {/* Campo de contraseña */}
                     <div className="text-left">
                         <label htmlFor="passwordInput" className="block text-gray-700 text-sm font-medium mb-2">Contraseña</label>
                         <div className="relative">
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 pr-12 text-gray-800 placeholder-gray-400" // Ajustado pr-12
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 pr-12 text-gray-800 placeholder-gray-400"
                                 id="passwordInput"
                                 placeholder="Ingresa tu contraseña"
                                 required
@@ -108,18 +97,16 @@ function LoginPage({ setShowGlobalSpinner, showToast }) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            {/* Botón de Mostrar/Ocultar Contraseña */}
                             <button
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-r-lg transition-colors duration-200" // Colores y focus mejorados
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-r-lg transition-colors duration-200"
                                 type="button"
                                 aria-label="Mostrar/ocultar contraseña"
                                 onClick={togglePasswordVisibility}
                             >
-                                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-lg`} aria-hidden="true"></i> {/* Tamaño del icono ajustado */}
+                                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-lg`} aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
-                    {/* Checkbox y enlace de olvidaste contraseña */}
                     <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center">
                             <input type="checkbox" className="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" id="rememberMe" />
@@ -127,7 +114,6 @@ function LoginPage({ setShowGlobalSpinner, showToast }) {
                         </div>
                         <a href="javascript:void(0)" className="text-primary-600 hover:underline hover:text-primary-700 transition-colors duration-200 font-medium" aria-label="¿Olvidaste tu contraseña?">¿Olvidaste tu contraseña?</a>
                     </div>
-                    {/* Botón de Iniciar Sesión */}
                     <button
                         type="submit"
                         className={`w-full bg-primary-700 text-white py-3.5 px-4 rounded-lg text-xl font-semibold hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl ${isLoading ? 'opacity-75 cursor-not-allowed' : ''} flex items-center justify-center`}
@@ -144,7 +130,6 @@ function LoginPage({ setShowGlobalSpinner, showToast }) {
                     </button>
                 </form>
 
-                {/* Sección de Registro */}
                 <div className="mt-10 pt-6 border-t border-gray-200 text-gray-600 text-base">
                     ¿Eres nuevo por aquí? <a href="javascript:void(0)" className="text-primary-600 hover:underline hover:text-primary-700 transition-colors duration-200 font-medium" aria-label="Registrarme en el sistema">Registrarme</a>
                 </div>
@@ -154,3 +139,4 @@ function LoginPage({ setShowGlobalSpinner, showToast }) {
 }
 
 export default LoginPage;
+
