@@ -16,17 +16,14 @@ function CalendarioTab({ showToast, setShowGlobalSpinner }) { // Recibe props si
   const calendarRef = useRef(null); // Ref para el componente FullCalendar de React
 
   // Eventos de ejemplo para el calendario
+  // Se usan los nombres de color de Tailwind definidos en tailwind.config.js
   const events = [
-    { title: 'Examen de Matemáticas', start: '2025-07-25', color: '#EF4444' }, // color Tailwind red-500
-    { title: 'Entrega Proyecto Ciencias', start: '2025-07-30', color: '#3B82F6' }, // color Tailwind blue-500
-    { title: 'Día del Deporte', start: '2025-08-10', allDay: true, color: '#22C55E' }, // color Tailwind green-500
-    { title: 'Reunión de Padres', start: '2025-07-28T18:00:00', end: '2025-07-28T19:00:00', color: '#F97316' }, // color Tailwind orange-500
+    { title: 'Examen de Matemáticas', start: '2025-07-25', color: '#EF4444' }, // red-500
+    { title: 'Entrega Proyecto Ciencias', start: '2025-07-30', color: '#3B82F6' }, // primary-500 (similar a blue-500)
+    { title: 'Día del Deporte', start: '2025-08-10', allDay: true, color: '#22C55E' }, // success-500 (similar a green-500)
+    { title: 'Reunión de Padres', start: '2025-07-28T18:00:00', end: '2025-07-28T19:00:00', color: '#F97316' }, // warning-500 (similar a orange-500)
   ];
 
-  // Este useEffect no es estrictamente necesario para la inicialización
-  // del calendario en sí (el componente <FullCalendar> lo hace),
-  // pero lo puedes usar para lógica que interactúe con la API del calendario
-  // *después* de que se haya renderizado.
   useEffect(() => {
     // Ejemplo de cómo accederías a la API si fuera necesario:
     // if (calendarRef.current) {
@@ -34,18 +31,16 @@ function CalendarioTab({ showToast, setShowGlobalSpinner }) { // Recibe props si
     //   console.log("API de FullCalendar disponible:", calendarApi);
     //   // calendarApi.addEvent({ id: 'new-event', title: 'Nuevo Evento Dinámico', start: '2025-07-26' });
     // }
-  }, []); // El array de dependencias vacío significa que se ejecuta una vez al montar
+  }, []);
 
   // Función para manejar el clic en un evento (ejemplo)
   const handleEventClick = (clickInfo) => {
     showToast(`Evento: ${clickInfo.event.title} (${clickInfo.event.startStr})`, 'info');
-    // Puedes abrir un modal o redirigir aquí
   };
 
   // Función para manejar la selección de una fecha/rango (ejemplo)
   const handleDateSelect = (selectInfo) => {
     showToast(`Fecha seleccionada: ${selectInfo.startStr} a ${selectInfo.endStr}`, 'info');
-    // Puedes abrir un formulario para añadir un nuevo evento aquí
   };
 
   return (
@@ -54,38 +49,36 @@ function CalendarioTab({ showToast, setShowGlobalSpinner }) { // Recibe props si
       {/* Encabezado de la pestaña con estilos Tailwind */}
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-2xl font-bold text-gray-800">Mi Calendario</h3>
-        {/* Aquí puedes añadir un botón para agregar evento rápidamente si lo deseas */}
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm">
+        {/* Botón para agregar evento rápidamente con estilos pulidos */}
+        <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">
             <i className="fas fa-plus mr-2"></i> Añadir Evento
         </button>
       </div>
       
       {/* Contenedor del calendario con fondo blanco y sombra */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
+      <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100"> {/* Redondeado y borde para la tarjeta */}
         {/* === AQUÍ SE RENDERIZA EL CALENDARIO USANDO EL COMPONENTE DE REACT === */}
         <FullCalendar
-          ref={calendarRef} // Asociamos la referencia al componente React
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]} // Pasamos los plugins
-          initialView="dayGridMonth" // Vista inicial por defecto
-          // Configuración de la barra de herramientas del encabezado del calendario
+          ref={calendarRef}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+          initialView="dayGridMonth"
           headerToolbar={{
-            left: 'prev,next today', // Botones de navegación y "hoy"
-            center: 'title', // Título del calendario (ej. "Julio 2025")
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' // Vistas disponibles
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           }}
-          events={events} // Pasamos los eventos al calendario
-          locale={esLocale} // Establece el idioma del calendario a español
-          editable={true}   // Permite arrastrar y soltar eventos para editarlos
-          selectable={true} // Permite seleccionar fechas y rangos
-          selectMirror={true} // Muestra un "fantasma" del evento al seleccionar un rango
-          dayMaxEvents={true} // Muestra "+n más" si hay demasiados eventos en un día
-          weekends={true} // Muestra los fines de semana
-          // Handlers de eventos de FullCalendar
-          eventClick={handleEventClick} // Se ejecuta al hacer clic en un evento
-          select={handleDateSelect} // Se ejecuta al seleccionar una fecha o rango
-          // Puedes añadir más opciones como props aquí: eventChange, eventAdd, eventRemove, etc.
-          // Estilo de FullCalendar (puedes sobrescribir con Tailwind en global.css si es necesario)
-          height="auto" // Ajusta la altura automáticamente
+          events={events}
+          locale={esLocale}
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          weekends={true}
+          eventClick={handleEventClick}
+          select={handleDateSelect}
+          height="auto"
+          // Puedes añadir estilos CSS específicos para FullCalendar en global.css si es necesario.
+          // Por ejemplo, para los botones internos de FullCalendar.
         />
       </div>
     </div>

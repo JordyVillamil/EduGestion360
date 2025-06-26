@@ -4,17 +4,20 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="footer bg-light text-center text-lg-start mt-auto py-3 shadow-sm">
-      <div className="container-fluid text-muted">
-        <div className="row">
-          <div className="col-md-6 text-md-start text-center">
+    // Footer principal: fondo blanco, sombra superior sutil, padding vertical
+    <footer className="bg-white text-center text-lg-start mt-auto py-4 shadow-top border-t border-gray-200"> {/* py-4 para más padding, shadow-top para sombra sutil arriba, border-t */}
+      <div className="container-fluid text-muted px-4"> {/* Padding horizontal consistente */}
+        <div className="flex flex-wrap justify-between items-center text-sm"> {/* Flex para alinear contenido */}
+          {/* Información de Copyright */}
+          <div className="w-full lg:w-auto mb-2 lg:mb-0 text-gray-600">
             © {new Date().getFullYear()} EduGestión 360. Todos los derechos reservados.
           </div>
-          <div className="col-md-6 text-md-end text-center">
-            <Link to="/ayuda" className="text-decoration-none me-3 footer-link">Ayuda</Link>
-            <Link to="/soporte" className="text-decoration-none me-3 footer-link">Soporte Técnico</Link>
-            <Link to="/terminos" className="text-decoration-none me-3 footer-link">Términos de Servicio</Link>
-            <Link to="/privacidad" className="text-decoration-none footer-link">Privacidad</Link>
+
+          {/* Enlaces del Footer */}
+          <div className="w-full lg:w-auto text-gray-600">
+            <Link to="/dashboard/politica-privacidad" className="hover:text-primary-600 transition-colors duration-200 mx-2">Política de Privacidad</Link> {/* Enlaces con color primario en hover */}
+            <Link to="/dashboard/terminos-servicio" className="hover:text-primary-600 transition-colors duration-200 mx-2">Términos de Servicio</Link>
+            <Link to="/dashboard/contacto" className="hover:text-primary-600 transition-colors duration-200 mx-2">Contacto</Link>
           </div>
         </div>
       </div>

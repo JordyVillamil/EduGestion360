@@ -1,11 +1,12 @@
 // src/pages/Dashboards/Estudiante/tabs/CalificacionesTab.jsx
 import React from 'react';
 // Asegúrate que estas rutas sean correctas para tus componentes compartidos
-import Card from '../../../../components/shared/Card'; // Añadimos un nivel más de '..'
-import ChartWrapper from '../../../../components/shared/ChartWrapper';   // <-- ¡CAMBIO AQUÍ!
-import StatisticCard from '../../../../components/shared/StatisticCard'; // <-- ¡CAMBIO AQUÍ!
+import Card from '../../../../components/shared/Card';
+import ChartWrapper from '../../../../components/shared/ChartWrapper';
+import StatisticCard from '../../../../components/shared/StatisticCard';
+
 // NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import '../../../styles/Dashboards/Estudiante/CalificacionesTab.css';)
-// Todos los estilos ahora se manejan con Tailwind CSS.
+// Los estilos ahora se manejan con Tailwind CSS.
 
 const CalificacionesTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe props si son necesarias
     // Datos de ejemplo
@@ -28,13 +29,13 @@ const CalificacionesTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe p
         <div className="p-4">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Mis Calificaciones</h3>
 
-            {/* Sección de Filtros (ejemplo) */}
-            <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">Filtros de Calificaciones</h3>
-                <div className="flex flex-wrap items-center gap-4">
+            {/* Sección de Filtros - Fondo sutil, bordes redondeados y sombra */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros de Calificaciones</h3>
+                <div className="flex flex-wrap items-center gap-6">
                     <div>
-                        <label htmlFor="subjectFilter" className="block text-sm font-medium text-gray-700">Materia:</label>
-                        <select id="subjectFilter" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="subjectFilter" className="block text-sm font-medium text-gray-700 mb-1">Materia:</label>
+                        <select id="subjectFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Todas</option>
                             <option>Matemáticas</option>
                             <option>Lenguaje</option>
@@ -43,21 +44,21 @@ const CalificacionesTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe p
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="periodFilter" className="block text-sm font-medium text-gray-700">Período:</label>
-                        <select id="periodFilter" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="periodFilter" className="block text-sm font-medium text-gray-700 mb-1">Período:</label>
+                        <select id="periodFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Todas</option>
                             <option>Bimestre 1</option>
                             <option>Bimestre 2</option>
                         </select>
                     </div>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Aplicar Filtros</button>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Aplicar Filtros</button>
                 </div>
             </div>
 
             {/* Sección de Promedios por Materia */}
-            <div className="flex flex-wrap -mx-2 mb-8"> {/* Usa flex-wrap y -mx-2 para columnas responsivas */}
+            <div className="flex flex-wrap -mx-3 mb-8"> {/* Usa flex-wrap y -mx-3 para columnas responsivas */}
                 {promedios.map((item, i) => (
-                    <div className="w-full sm:w-1/2 lg:w-1/4 px-2 mb-4" key={i}> {/* Columnas de 1/4 en lg, 1/2 en sm */}
+                    <div className="w-full sm:w-1/2 lg:w-1/4 px-3 mb-6" key={i}> {/* Columnas de 1/4 en lg, 1/2 en sm, px-3 y mb-6 para espaciado */}
                         <StatisticCard title={item.materia} value={item.promedio} footerText="Promedio actual" />
                     </div>
                 ))}
@@ -68,22 +69,22 @@ const CalificacionesTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe p
                 {/* Contenedor responsivo para la tabla */}
                 <div className="overflow-x-auto">
                     {/* Tabla con estilos de Tailwind */}
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead>
+                    <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+                        <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Materia</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actividad</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Calificación</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Fecha</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Materia</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Actividad</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Calificación</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {detalleCalificaciones.map((item, i) => (
-                                <tr key={item.id || i} className="hover:bg-gray-50"> {/* Usar item.id si existe */}
+                            {detalleCalificaciones.map((item) => (
+                                <tr key={item.id || item.fecha + item.materia} className="hover:bg-gray-50 transition-colors duration-150"> {/* Usar id o una combinación de propiedades para la key */}
                                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.fecha}</td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{item.materia}</td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{item.actividad}</td>
-                                    <td className="px-4 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{item.calificacion}</td>
+                                    <td className="px-4 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{item.calificacion}</td> {/* Bold for score */}
                                 </tr>
                             ))}
                         </tbody>
@@ -92,11 +93,11 @@ const CalificacionesTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe p
             </Card>
 
             {/* Fila inferior con gráfico y promedio general */}
-            <div className="flex flex-wrap -mx-2 mt-6"> {/* Usa flex-wrap y -mx-2 para columnas */}
-                <div className="w-full md:w-1/2 px-2 mb-4"> {/* Columna 1/2 en md y arriba */}
+            <div className="flex flex-wrap -mx-3 mt-8"> {/* Usa flex-wrap y -mx-3 para columnas, mt-8 para mayor margen superior */}
+                <div className="w-full md:w-1/2 px-3 mb-6"> {/* Columna 1/2 en md y arriba, px-3 y mb-6 para espaciado */}
                     <ChartWrapper title="Progreso académico por materias" type="line" />
                 </div>
-                <div className="w-full md:w-1/2 px-2 mb-4"> {/* Columna 1/2 en md y arriba */}
+                <div className="w-full md:w-1/2 px-3 mb-6">
                     <StatisticCard title="Promedio General del Periodo" value="17.5" footerText="Basado en calificaciones actuales" />
                 </div>
             </div>

@@ -1,12 +1,9 @@
 // src/pages/Dashboards/docente/tabs/CalificacionesDocenteTab.jsx
 import React from 'react';
-import Card from '../../../../components/shared/Card'; // Añadimos un nivel más de '..'
-import ChartWrapper from '../../../../components/shared/ChartWrapper';   // <-- ¡CAMBIO AQUÍ!
+import Card from '../../../../components/shared/Card'; // Ensure this path is correct
+import ChartWrapper from '../../../../components/shared/ChartWrapper';
 
-// NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import './CalificacionesDocenteTab.css';)
-// Todos los estilos ahora se manejan con Tailwind CSS.
-
-const CalificacionesDocenteTab = ({ showToast, setShowGlobalSpinner }) => { // Si necesitas props aquí, añádelas
+const CalificacionesDocenteTab = ({ showToast, setShowGlobalSpinner }) => { // If you need props here, add them
     const estudiantes = [
         { id: 1, nombre: 'Ana García', calificacion: '18', estado: 'Entregado a tiempo', comentarios: '' },
         { id: 2, nombre: 'Carlos Rodríguez', calificacion: '15', estado: 'Entregado a tiempo', comentarios: '' },
@@ -15,58 +12,58 @@ const CalificacionesDocenteTab = ({ showToast, setShowGlobalSpinner }) => { // S
     ];
 
     return (
-        // Contenedor principal de la pestaña con padding
+        // Main tab container with padding
         <div className="p-4">
-            {/* Sección de Filtros (ejemplo) */}
-            <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">Filtros de Calificaciones</h3>
-                <div className="flex flex-wrap items-center gap-4">
+            {/* Filter Section - Subtle background, rounded borders, and shadow */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros de Calificaciones</h3>
+                <div className="flex flex-wrap items-center gap-6">
                     <div>
-                        <label htmlFor="courseSelect" className="block text-sm font-medium text-gray-700">Curso:</label>
-                        <select id="courseSelect" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="courseSelect" className="block text-sm font-medium text-gray-700 mb-1">Curso:</label>
+                        <select id="courseSelect" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>10° A</option>
                             <option>10° B</option>
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="activitySelect" className="block text-sm font-medium text-gray-700">Actividad:</label>
-                        <select id="activitySelect" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="activitySelect" className="block text-sm font-medium text-gray-700 mb-1">Actividad:</label>
+                        <select id="activitySelect" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Ejercicios de Álgebra</option>
                             <option>Examen Bimestral</option>
                         </select>
                     </div>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Cargar Actividad</button>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Cargar Actividad</button>
                 </div>
             </div>
 
             <Card title="Ingresar Notas para: Ejercicios de Álgebra (15/04/2025)">
-                {/* Contenedor responsivo para la tabla */}
+                {/* Responsive table container */}
                 <div className="overflow-x-auto">
-                    {/* Tabla con estilos de Tailwind */}
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead>
+                    {/* Table with Tailwind styles */}
+                    <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+                        <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estudiante</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Calificación</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comentarios</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Estudiante</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Calificación</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Estado</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Comentarios</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {estudiantes.map((est, i) => (
-                                <tr key={est.id || i} className="hover:bg-gray-50"> {/* Usar est.id si existe */}
+                            {estudiantes.map((est) => (
+                                <tr key={est.id} className="hover:bg-gray-50 transition-colors duration-150">
                                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{est.nombre}</td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm">
                                         <input
                                             type="number"
-                                            className="w-20 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                            className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm text-gray-800 transition-all duration-200" // Adjusted width and padding
                                             defaultValue={est.calificacion}
-                                            min="0" max="20" // Ejemplo de límites de calificación
+                                            min="0" max="20" // Example score limits
                                         />
                                     </td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm">
-                                        <select className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm text-gray-800 transition-all duration-200"> // Adjusted padding
                                             <option>{est.estado}</option>
                                             <option>Entregado a tiempo</option>
                                             <option>Entregado con retraso</option>
@@ -76,32 +73,32 @@ const CalificacionesDocenteTab = ({ showToast, setShowGlobalSpinner }) => { // S
                                     <td className="px-4 py-4 whitespace-nowrap text-sm">
                                         <input
                                             type="text"
-                                            className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm placeholder-gray-400 transition-all duration-200" // Adjusted padding
                                             defaultValue={est.comentarios}
                                             placeholder="Añadir comentarios..."
                                         />
                                     </td>
                                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Guardar</button>
+                                        <button className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 shadow-sm hover:shadow-md transition-all duration-200">Guardar</button> {/* Adjusted padding and shadow */}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                {/* Botón Guardar Todos los Cambios */}
-                <div className="flex justify-end mt-6">
-                    <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Guardar todos los cambios</button>
+                {/* Save All Changes Button */}
+                <div className="flex justify-end mt-6 pt-2">
+                    <button className="bg-success-600 hover:bg-success-700 text-white font-bold py-2.5 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2 shadow-md hover:shadow-lg transition-all duration-200">Guardar todos los cambios</button>
                 </div>
             </Card>
 
-            <div className="flex flex-wrap -mx-2 mt-6"> {/* Usa flex-wrap y -mx-2 para columnas */}
-                <div className="w-full md:w-1/2 px-2 mb-4"> {/* Columna 1/2 en md y arriba */}
+            <div className="flex flex-wrap -mx-3 mt-8"> {/* Adjusted margin top and negative x-margin */}
+                <div className="w-full md:w-1/2 px-3 mb-6"> {/* px-3 and mb-6 */}
                     <ChartWrapper title="Estadísticas de la actividad" type="bar" />
                 </div>
-                <div className="w-full md:w-1/2 px-2 mb-4"> {/* Columna 1/2 en md y arriba */}
+                <div className="w-full md:w-1/2 px-3 mb-6">
                     <Card title="Resumen de Calificaciones">
-                        <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                        <ul className="list-disc list-inside text-gray-700 text-base space-y-2"> {/* Adjusted text size and spacing */}
                             <li>Promedio del curso: 17.0</li>
                             <li>Calificación más alta: 20</li>
                             <li>Calificación más baja: 12</li>

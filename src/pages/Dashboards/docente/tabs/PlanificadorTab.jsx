@@ -1,79 +1,95 @@
 // src/pages/Dashboards/docente/tabs/PlanificadorTab.jsx
 import React from 'react';
-import Card from '../../../../components/shared/Card'; // Añadimos un nivel más de '..'
-// NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import './PlanificadorTab.css';)
-// Todos los estilos ahora se manejan con Tailwind CSS.
+import Card from '../../../../components/shared/Card'; // Ensure this path is correct
 
-const PlanificadorTab = ({ showToast, setShowGlobalSpinner }) => { // Si necesitas props aquí, añádelas
+const PlanificadorTab = ({ showToast, setShowGlobalSpinner }) => { // If you need props here, add them
     return (
-        // Contenedor principal de la pestaña con padding
+        // Main tab container with padding
         <div className="p-4">
-            {/* Sección de Filtros (ejemplo) */}
-            <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">Filtros del Planificador</h3>
-                <div className="flex flex-wrap items-center gap-4">
+            {/* Filter Section - Subtle background, rounded borders, and shadow */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros del Planificador</h3>
+                <div className="flex flex-wrap items-center gap-6">
                     <div>
-                        <label htmlFor="planMonth" className="block text-sm font-medium text-gray-700">Mes:</label>
-                        <select id="planMonth" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="planMonth" className="block text-sm font-medium text-gray-700 mb-1">Mes:</label>
+                        <select id="planMonth" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Julio 2025</option>
                             <option>Agosto 2025</option>
+                            <option>Septiembre 2025</option>
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="planCourse" className="block text-sm font-medium text-gray-700">Curso:</label>
-                        <select id="planCourse" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="planCourse" className="block text-sm font-medium text-gray-700 mb-1">Curso:</label>
+                        <select id="planCourse" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Todos</option>
                             <option>10° A</option>
                             <option>10° B</option>
+                            <option>11° A</option>
                         </select>
                     </div>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Aplicar Filtros</button>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Aplicar Filtros</button>
                 </div>
             </div>
 
-            {/* Contenedor principal del calendario/planificador */}
+            {/* Main calendar/planner container */}
             <Card title="Calendario de Planificación">
-                {/* Contenedor del calendario con altura fija y estilos de centrado con Tailwind */}
-                <div className="h-96 flex items-center justify-center bg-gray-50 rounded-md"> {/* h-96 es 500px, bg-gray-50 es #f8f9fa */}
-                    <p className="text-gray-500">Componente de Calendario (Planificador) iría aquí.</p>
+                {/* Calendar container with fixed height and centering styles with Tailwind */}
+                <div className="h-96 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-200"> {/* h-96 is ~384px, bg-gray-50 is #f8f9fa */}
+                    <p className="text-gray-500 text-base">Componente de Calendario (Planificador) iría aquí.</p>
                 </div>
             </Card>
 
-            {/* Fila inferior con formulario y lista (anteriormente Bootstrap .row) */}
-            <div className="flex flex-wrap -mx-2 mt-6"> {/* Usa flex-wrap para responsividad, -mx-2 para compensar el px-2 en los hijos */}
-                <div className="w-full md:w-5/12 px-2 mb-4 md:mb-0"> {/* Columna 5/12 en md y arriba */}
+            {/* Bottom row with form and list */}
+            <div className="flex flex-wrap -mx-3 mt-8"> {/* Adjusted negative x-margin and increased top margin */}
+                <div className="w-full md:w-5/12 px-3 mb-6 md:mb-0">
                     <Card title="Nueva Planificación">
-                        {/* Formulario de ejemplo */}
-                        <form className="space-y-4">
+                        {/* Example form */}
+                        <form className="space-y-6">
                             <div>
-                                <label htmlFor="planTitle" className="block text-sm font-medium text-gray-700">Título del Evento</label>
-                                <input type="text" id="planTitle" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ej: Clase de Matemáticas" />
+                                <label htmlFor="planTitle" className="block text-sm font-medium text-gray-700 mb-2">Título del Evento</label>
+                                <input type="text" id="planTitle" className="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 placeholder-gray-400 transition-all duration-200" placeholder="Ej: Clase de Matemáticas" />
                             </div>
                             <div>
-                                <label htmlFor="planDate" className="block text-sm font-medium text-gray-700">Fecha</label>
-                                <input type="date" id="planDate" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                                <label htmlFor="planDate" className="block text-sm font-medium text-gray-700 mb-2">Fecha</label>
+                                <input type="date" id="planDate" className="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200" />
                             </div>
                             <div>
-                                <label htmlFor="planDescription" className="block text-sm font-medium text-gray-700">Descripción</label>
-                                <textarea id="planDescription" rows="3" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Detalles de la planificación..."></textarea>
+                                <label htmlFor="planDescription" className="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                                <textarea id="planDescription" rows="4" className="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 placeholder-gray-400 transition-all duration-200" placeholder="Detalles de la planificación..."></textarea>
                             </div>
-                            <div className="text-right">
-                                <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Añadir Planificación</button>
+                            <div className="flex justify-end pt-2">
+                                <button type="submit" className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Añadir Planificación</button>
                             </div>
                         </form>
                     </Card>
                 </div>
-                <div className="w-full md:w-7/12 px-2"> {/* Columna 7/12 en md y arriba */}
+                <div className="w-full md:w-7/12 px-3">
                     <Card title="Próximas Clases / Eventos">
-                        {/* Lista de clases/eventos con estilos Tailwind */}
-                        <ul className="divide-y divide-gray-200">
-                            <li className="py-3 px-2 text-sm text-gray-800 hover:bg-gray-50">
-                                <span className="font-semibold">Matemáticas 10° A</span> - Tema: Álgebra. <span className="text-gray-500 text-xs float-right">Hoy, 09:00 AM</span>
+                        {/* List of classes/events with polished Tailwind styles */}
+                        <ul className="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+                            <li className="py-4 px-4 text-sm text-gray-800 hover:bg-gray-50 transition-colors duration-200">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="font-bold text-lg text-primary-700">Matemáticas 10° A</span>
+                                    <span className="text-gray-500 text-xs"><i className="fas fa-calendar-alt mr-1"></i>Hoy, 09:00 AM</span>
+                                </div>
+                                <p className="text-gray-600 text-sm mb-1">Tema: Álgebra.</p>
+                                <div className="flex justify-end space-x-3 mt-2">
+                                    <button className="text-primary-600 hover:text-primary-800 text-sm font-medium transition-colors duration-200"><i className="fas fa-edit mr-1"></i> Editar</button>
+                                    <button className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors duration-200"><i className="fas fa-trash mr-1"></i> Eliminar</button>
+                                </div>
                             </li>
-                            <li className="py-3 px-2 text-sm text-gray-800 hover:bg-gray-50">
-                                <span className="font-semibold">Reunión de Departamento</span> - Prep. Exámenes. <span className="text-gray-500 text-xs float-right">Mañana, 02:00 PM</span>
+                            <li className="py-4 px-4 text-sm text-gray-800 hover:bg-gray-50 transition-colors duration-200">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="font-bold text-lg text-primary-700">Reunión de Departamento</span>
+                                    <span className="text-gray-500 text-xs"><i className="fas fa-calendar-alt mr-1"></i>Mañana, 02:00 PM</span>
+                                </div>
+                                <p className="text-gray-600 text-sm mb-1">Prep. Exámenes.</p>
+                                <div className="flex justify-end space-x-3 mt-2">
+                                    <button className="text-primary-600 hover:text-primary-800 text-sm font-medium transition-colors duration-200"><i className="fas fa-edit mr-1"></i> Editar</button>
+                                    <button className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors duration-200"><i className="fas fa-trash mr-1"></i> Eliminar</button>
+                                </div>
                             </li>
-                            {/* ... Lista de clases ... */}
+                            {/* ... List of classes ... */}
                         </ul>
                     </Card>
                 </div>

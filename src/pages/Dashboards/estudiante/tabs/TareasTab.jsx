@@ -1,21 +1,21 @@
 // src/pages/Dashboards/Estudiante/tabs/TareasTab.jsx
 import React from 'react';
 // Asegúrate que esta ruta sea correcta para tu componente compartido
-import Card from '../../../../components/shared/Card'; // Añadimos un nivel más de '..'
+import Card from '../../../../components/shared/Card';
 
 // NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import './TareasTab.css';)
 // Todos los estilos ahora se manejan con Tailwind CSS.
 
 const TareaCard = ({ tarea }) => (
-    // Columna para la tarjeta de tarea. w-full para ancho completo en móvil, md:w-1/3 para 1/3 en desktop, px-2 para padding horizontal.
-    <div className="w-full sm:w-1/2 md:w-1/3 px-2 mb-4">
+    // Columna para la tarjeta de tarea. w-full para ancho completo en móvil, md:w-1/3 para 1/3 en desktop, px-3 para padding horizontal.
+    <div className="w-full sm:w-1/2 md:w-1/3 px-3 mb-6"> {/* Ajustado a px-3 y mb-6 para consistencia */}
         <Card title={
             // Título de la tarjeta con la materia y el badge de la fecha de vencimiento
             <span className="flex justify-between items-center text-gray-800 text-lg font-semibold">
                 {tarea.materia}
-                {/* Badge para la fecha de vencimiento con estilos Tailwind */}
+                {/* Badge para la fecha de vencimiento con estilos Tailwind pulidos */}
                 <span className={`
-                    text-white text-xs font-semibold px-2 py-0.5 rounded-full
+                    text-white text-xs font-semibold px-2.5 py-1 rounded-full
                     ${tarea.vence === 'Vence hoy' ? 'bg-red-500' : 'bg-yellow-400 text-gray-800'}
                 `}>
                     {tarea.vence}
@@ -23,10 +23,10 @@ const TareaCard = ({ tarea }) => (
             </span>
         }>
             <h5 className="text-xl font-semibold text-gray-700 mb-2">{tarea.titulo}</h5>
-            <p className="text-gray-600 text-sm mb-4">{tarea.descripcion}</p>
+            <p className="text-gray-600 text-sm mb-5">{tarea.descripcion}</p> {/* Más margen inferior */}
             {/* Pie de la tarjeta con el botón de "Ver detalles" */}
-            <div className="pt-4 border-t border-gray-200 mt-auto"> {/* mt-auto para empujar al final */}
-                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm">
+            <div className="pt-4 border-t border-gray-200 mt-auto flex justify-end"> {/* mt-auto para empujar al final, justify-end para alinear botón */}
+                <button className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-sm shadow-sm hover:shadow-md transition-all duration-200">
                     Ver detalles
                 </button>
             </div>
@@ -48,13 +48,13 @@ const TareasTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe props si 
         <div className="p-4">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Mis Tareas Pendientes</h3>
 
-            {/* Sección de Filtros (ejemplo) */}
-            <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">Filtros de Tareas</h3>
-                <div className="flex flex-wrap items-center gap-4">
+            {/* Sección de Filtros - Fondo sutil, bordes redondeados y sombra */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros de Tareas</h3>
+                <div className="flex flex-wrap items-center gap-6">
                     <div>
-                        <label htmlFor="taskSubjectFilter" className="block text-sm font-medium text-gray-700">Materia:</label>
-                        <select id="taskSubjectFilter" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="taskSubjectFilter" className="block text-sm font-medium text-gray-700 mb-1">Materia:</label>
+                        <select id="taskSubjectFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Todas</option>
                             <option>Matemáticas</option>
                             <option>Lenguaje</option>
@@ -64,20 +64,20 @@ const TareasTab = ({ showToast, setShowGlobalSpinner }) => { // Recibe props si 
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="taskStatusFilter" className="block text-sm font-medium text-gray-700">Estado:</label>
-                        <select id="taskStatusFilter" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="taskStatusFilter" className="block text-sm font-medium text-gray-700 mb-1">Estado:</label>
+                        <select id="taskStatusFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Todas</option>
                             <option>Pendientes</option>
                             <option>Completadas</option>
                             <option>Vencidas</option>
                         </select>
                     </div>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Aplicar Filtros</button>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Aplicar Filtros</button>
                 </div>
             </div>
 
             {/* Fila de Tarjetas de Tarea */}
-            <div className="flex flex-wrap -mx-2"> {/* Usa flex-wrap para responsividad, -mx-2 para compensar el px-2 en los hijos */}
+            <div className="flex flex-wrap -mx-3"> {/* Ajustado a -mx-3 para consistencia */}
                 {tareas.map((tarea) => <TareaCard key={tarea.id} tarea={tarea} />)}
             </div>
         </div>

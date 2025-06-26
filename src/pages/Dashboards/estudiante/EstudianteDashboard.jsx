@@ -42,54 +42,55 @@ function EstudianteDashboard({ setShowGlobalSpinner, showToast }) {
             case 'documentos': return <DocumentosTab showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />;
             case 'calendario': return <CalendarioTab showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />;
             case 'recursos': return <RecursosTab showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />;
-            default: return <p className="text-gray-600">Selecciona una opción para ver el contenido.</p>;
+            default: return <p className="text-gray-600 text-center py-8">Selecciona una opción para ver el contenido.</p>;
         }
     };
 
     return (
         // Contenedor principal del dashboard con estilos Tailwind
-        <div className="bg-white p-6 rounded-lg shadow-md min-h-[calc(100vh-160px)]"> {/* Ajusta min-h para tu contenido */}
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold text-gray-800">Dashboard de Estudiante</h2>
-                {/* Botón flotante para subir documentos, ahora con clases Tailwind */}
+        // Fondo blanco, padding generoso, bordes redondeados y sombra
+        <div className="bg-white p-8 rounded-2xl shadow-lg min-h-[calc(100vh-160px)]">
+            <div className="flex justify-between items-center mb-8"> {/* Increased margin bottom */}
+                <h2 className="text-3xl font-extrabold text-gray-800">Dashboard de Estudiante</h2> {/* Stronger title */}
+                {/* Botón flotante para subir documentos, ahora con clases Tailwind pulidas */}
                 {activeTab === 'documentos' && ( // Visible solo en la pestaña de documentos
                     <button
-                        className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold w-12 h-12 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-transform duration-200 transform hover:scale-105"
+                        className="flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white font-bold w-14 h-14 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-transform duration-200 transform hover:scale-110" // Larger, more prominent
                         onClick={handleUploadDocumentClick}
                         aria-label="Subir documento"
                         title="Subir nuevo documento"
                     >
-                        <i className="fas fa-upload text-lg"></i>
+                        <i className="fas fa-upload text-xl"></i> {/* Larger icon */}
                     </button>
                 )}
             </div>
 
-            {/* Navegación por pestañas con estilos Tailwind */}
-            <div className="flex border-b border-gray-200 mb-6 overflow-x-auto"> {/* overflow-x-auto para pestañas en móviles */}
+            {/* Navegación por pestañas con estilos Tailwind mejorados */}
+            <div className="flex border-b border-gray-200 mb-8 overflow-x-auto"> {/* Increased margin bottom, added overflow-x for responsiveness */}
                 {studentTabs.map(tab => (
                     <button
                         key={tab.id}
                         className={`
-                            flex-shrink-0 px-4 py-2 text-sm font-medium whitespace-nowrap
+                            flex-shrink-0 px-6 py-3 text-base font-semibold whitespace-nowrap
                             ${activeTab === tab.id
-                                ? 'border-b-2 border-blue-600 text-blue-600' // Estilo de pestaña activa
-                                : 'text-gray-600 hover:text-gray-800 hover:border-gray-300' // Estilo de pestaña inactiva
+                                ? 'border-b-3 border-primary-600 text-primary-700' // Stronger active indicator
+                                : 'text-gray-600 hover:text-primary-700 hover:border-primary-300' // Hover color to primary
                             }
-                            focus:outline-none focus:text-blue-800 focus:border-blue-800
-                            transition-colors duration-200 ease-in-out
+                            focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                            transition-all duration-200 ease-in-out
                         `}
                         onClick={() => setActiveTab(tab.id)}
                         role="tab"
                         aria-controls={tab.id}
                         aria-selected={activeTab === tab.id}
                     >
-                        <i className={`${tab.icon} mr-2`}></i>{tab.label}
+                        <i className={`${tab.icon} mr-3 text-lg`}></i>{tab.label} {/* Larger icon */}
                     </button>
                 ))}
             </div>
 
             {/* Contenido de las pestañas */}
-            <div className="p-4 bg-gray-50 rounded-lg"> {/* Fondo ligero para el contenido de la pestaña */}
+            <div className="p-6 bg-gray-50 rounded-lg border border-gray-100"> {/* Increased padding, subtle border */}
                 {renderActiveTabContent()}
             </div>
         </div>
