@@ -1,8 +1,8 @@
 // src/pages/Dashboards/directivo/tabs/EstadisticasTab.jsx
 import React from 'react';
 // Asegúrate que estas rutas sean correctas para tus componentes compartidos
-import StatisticCard from '../../../../components/shared/StatisticCard'; // <-- ¡CAMBIO AQUÍ!
-import ChartWrapper from '../../../../components/shared/ChartWrapper';   // <-- ¡CAMBIO AQUÍ!
+import StatisticCard from '../../../../components/shared/StatisticCard';
+import ChartWrapper from '../../../../components/shared/ChartWrapper';
 
 // NOTA: Elimina cualquier importación de archivos CSS aquí (ej. import './EstadisticasTab.css';)
 // Todos los estilos ahora se manejan con Tailwind CSS.
@@ -11,48 +11,48 @@ const EstadisticasTab = ({ showToast, setShowGlobalSpinner }) => { // Si necesit
     return (
         // Contenedor principal de la pestaña con padding
         <div className="p-4">
-            {/* Sección de Filtros (ejemplo de cómo se verían con Tailwind) */}
-            <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700 mb-3">Filtros de Estadísticas</h3>
-                <div className="flex flex-wrap items-center gap-4">
+            {/* Sección de Filtros - Fondo sutil, bordes redondeados y sombra */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros de Estadísticas</h3>
+                <div className="flex flex-wrap items-center gap-6">
                     {/* Ejemplo de un filtro de selección */}
                     <div>
-                        <label htmlFor="periodFilter" className="block text-sm font-medium text-gray-700">Período:</label>
-                        <select id="periodFilter" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <label htmlFor="periodFilter" className="block text-sm font-medium text-gray-700 mb-1">Período:</label>
+                        <select id="periodFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Último mes</option>
                             <option>Último trimestre</option>
                             <option>Último año</option>
                         </select>
                     </div>
                     {/* Puedes añadir más filtros aquí */}
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Aplicar Filtros</button>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Aplicar Filtros</button>
                 </div>
             </div>
 
-            {/* Fila de Tarjetas de Estadísticas (anteriormente Bootstrap .row y .col-md-3) */}
-            <div className="flex flex-wrap -mx-2 mb-8"> {/* Usa flex-wrap para responsividad, -mx-2 para compensar el px-2 en los hijos */}
+            {/* Fila de Tarjetas de Estadísticas */}
+            <div className="flex flex-wrap -mx-3 mb-8"> {/* Usa -mx-3 para compensar el px-3 en las columnas */}
                 {/* Columnas, cada una ocupa 1/4 del ancho en pantallas md y arriba, con padding horizontal */}
-                <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                <div className="w-full sm:w-1/2 md:w-1/4 px-3 mb-6"> {/* px-3 y mb-6 para espaciado */}
                     <StatisticCard title="Rendimiento académico" value="17.5" footerText="Promedio general" />
                 </div>
-                <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                <div className="w-full sm:w-1/2 md:w-1/4 px-3 mb-6">
                     <StatisticCard title="Asistencia" value="92%" footerText="Promedio general" />
                 </div>
-                <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                <div className="w-full sm:w-1/2 md:w-1/4 px-3 mb-6">
                     <StatisticCard title="Comportamiento" value="A" footerText="Calificación general" />
                 </div>
-                <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-4">
+                <div className="w-full sm:w-1/2 md:w-1/4 px-3 mb-6">
                     <StatisticCard title="Matrículas" value="98%" footerText="Tasa de ocupación" />
                 </div>
             </div>
 
-            {/* Fila de Gráficos (anteriormente Bootstrap .row y .col-md-6) */}
-            <div className="flex flex-wrap -mx-2">
+            {/* Fila de Gráficos */}
+            <div className="flex flex-wrap -mx-3">
                 {/* Columnas, cada una ocupa 1/2 del ancho en pantallas md y arriba, con padding horizontal */}
-                <div className="w-full md:w-1/2 px-2 mb-4">
+                <div className="w-full md:w-1/2 px-3 mb-6">
                     <ChartWrapper title="Rendimiento por cursos" type="bar" />
                 </div>
-                <div className="w-full md:w-1/2 px-2 mb-4">
+                <div className="w-full md:w-1/2 px-3 mb-6">
                     <ChartWrapper title="Rendimiento por materias" type="radar" />
                 </div>
             </div>

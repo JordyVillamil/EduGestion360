@@ -5,13 +5,13 @@ import Card from '../../../../components/shared/Card'; // Ensure this path is co
 const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => {
     return (
         <div className="p-4">
-            {/* Filter Section */}
-            <div className="mb-8 bg-gray-100 p-6 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">Filtros de Comunicados</h3>
+            {/* Sección de Filtros - Fondo sutil, bordes redondeados y sombra */}
+            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros de Comunicados</h3>
                 <div className="flex flex-wrap items-center gap-6">
                     <div>
                         <label htmlFor="communicationTypeFilter" className="block text-sm font-medium text-gray-700 mb-1">Tipo:</label>
-                        <select id="communicationTypeFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
+                        <select id="communicationTypeFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
                             <option>Todos</option>
                             <option>Noticia</option>
                             <option>Recordatorio</option>
@@ -20,9 +20,9 @@ const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => {
                     </div>
                     <div>
                         <label htmlFor="communicationDateFilter" className="block text-sm font-medium text-gray-700 mb-1">Fecha:</label>
-                        <input type="date" id="communicationDateFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200" />
+                        <input type="date" id="communicationDateFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200" />
                     </div>
-                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200">Aplicar Filtros</button>
+                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Aplicar Filtros</button>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@ const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => {
                             <div className="flex justify-end pt-2">
                                 <button
                                     type="submit"
-                                    className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md"
+                                    className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg"
                                 >
                                     Enviar Comunicado
                                 </button>
@@ -77,19 +77,19 @@ const ComunicadosTab = ({ showToast, setShowGlobalSpinner }) => {
                         {/* List of sent notifications with polished Tailwind styles */}
                         <div className="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
                             <button type="button" className="block w-full text-left p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-gray-800 transition-colors duration-200">
-                                <span className="font-semibold text-lg block mb-1">Recordatorio: Examen parcial</span>
-                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-calendar-alt mr-2"></i>Para: 10° A</span>
-                                <span className="text-gray-500 text-xs block"><i className="fas fa-clock mr-2"></i>25/06/2025 - 09:00 AM</span>
+                                <span className="font-bold text-lg block mb-1 text-primary-700">Recordatorio: Examen parcial</span>
+                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-user-graduate mr-2 text-gray-500"></i>Para: 10° A</span> {/* Icono más relevante */}
+                                <span className="text-gray-500 text-xs block"><i className="fas fa-calendar-alt mr-2 text-gray-500"></i>25/06/2025 - 09:00 AM</span>
                             </button>
                             <button type="button" className="block w-full text-left p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-gray-800 transition-colors duration-200">
-                                <span className="font-semibold text-lg block mb-1">Reunión de padres el viernes</span>
-                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-calendar-alt mr-2"></i>Para: Todos los padres</span>
-                                <span className="text-gray-500 text-xs block"><i className="fas fa-clock mr-2"></i>24/06/2025 - 03:00 PM</span>
+                                <span className="font-bold text-lg block mb-1 text-primary-700">Reunión de padres el viernes</span>
+                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-users mr-2 text-gray-500"></i>Para: Todos los padres</span> {/* Icono más relevante */}
+                                <span className="text-gray-500 text-xs block"><i className="fas fa-calendar-alt mr-2 text-gray-500"></i>24/06/2025 - 03:00 PM</span>
                             </button>
                             <button type="button" className="block w-full text-left p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-gray-800 transition-colors duration-200">
-                                <span className="font-semibold text-lg block mb-1">Cierre de calificaciones</span>
-                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-calendar-alt mr-2"></i>Para: Docentes y Directivos</span>
-                                <span className="text-gray-500 text-xs block"><i className="fas fa-clock mr-2"></i>20/06/2025 - 05:00 PM</span>
+                                <span className="font-bold text-lg block mb-1 text-primary-700">Cierre de calificaciones</span>
+                                <span className="text-gray-600 text-sm block mb-0.5"><i className="fas fa-chalkboard-teacher mr-2 text-gray-500"></i>Para: Docentes y Directivos</span> {/* Icono más relevante */}
+                                <span className="text-gray-500 text-xs block"><i className="fas fa-calendar-alt mr-2 text-gray-500"></i>20/06/2025 - 05:00 PM</span>
                             </button>
                             {/* Map over notifications here */}
                         </div>
