@@ -1,142 +1,139 @@
 // src/pages/Auth/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form'; // Importar useForm
+import { yupResolver } from '@hookform/resolvers/yup'; // Importar yupResolver
+import * as yup from 'yup'; // Importar yup
 
-function LoginPage({ setShowGlobalSpinner, showToast }) {
-    const [emailOrUsername, setEmailOrUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+// Definir el esquema de validación con Yup
+const loginSchema = yup.object().shape({
+  email: yup.string()
+    .email('El correo electrónico debe ser válido.') // Valida formato de email
+    .required('El correo electrónico es obligatorio.'), // Campo requerido
+  password: yup.string()
+    .min(6, 'La contraseña debe tener al menos 6 caracteres.') // Mínimo 6 caracteres
+    .required('La contraseña es obligatoria.'), // Campo requerido
+});
 
-    const navigate = useNavigate();
+const LoginPage = ({ setShowGlobalSpinner, showToast }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(prevState => !prevState);
-    };
+  // Inicializar react-hook-form con el resolver de Yup
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+  const onSubmit = async (data) => {
+    setShowGlobalSpinner(true);
+    console.log('Datos de inicio de sesión:', data);
 
-        if (!emailOrUsername || !password) {
-            showToast('Por favor, ingresa tu usuario/email y contraseña.', 'error');
-            return;
-        }
+    try {
+      // Simular una llamada a la API
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        setIsLoading(true);
-        setShowGlobalSpinner(true);
+      // Simular autenticación exitosa
+      // En un entorno real, la API te devolvería el rol del usuario
+      const userRole = data.email.includes('estudiante') ? 'estudiante'
+                     : data.email.includes('docente') ? 'docente'
+                     : data.email.includes('directivo') ? 'directivo'
+                     : 'estudiante'; // Rol por defecto si no coincide
 
-        setTimeout(() => {
-            setIsLoading(false);
-            setShowGlobalSpinner(false);
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userRole', userRole);
+      showToast('Inicio de sesión exitoso', 'success');
+      navigate(`/dashboard/${userRole}`);
+    } catch (error) {
+      showToast('Error al iniciar sesión. Credenciales inválidas.', 'error');
+      console.error('Error de autenticación:', error);
+    } finally {
+      setShowGlobalSpinner(false);
+    }
+  };
 
-            let redirectPath = '';
-            let welcomeMessage = '';
-            let userRole = '';
-
-            if (emailOrUsername === 'estudiante' && password === 'pass123') {
-                localStorage.setItem('authToken', 'simulated_student_token');
-                userRole = 'estudiante';
-                welcomeMessage = '¡Bienvenido, Estudiante!';
-                redirectPath = '/dashboard/estudiante';
-            } else if (emailOrUsername === 'docente' && password === 'pass123') {
-                localStorage.setItem('authToken', 'simulated_teacher_token');
-                userRole = 'docente';
-                welcomeMessage = '¡Bienvenido, Docente!';
-                redirectPath = '/dashboard/docente';
-            } else if (emailOrUsername === 'directivo' && password === 'pass123') {
-                localStorage.setItem('authToken', 'simulated_admin_token');
-                userRole = 'directivo';
-                welcomeMessage = '¡Bienvenido, Directivo!';
-                redirectPath = '/dashboard/directivo';
-            } else {
-                showToast('Usuario o contraseña incorrectos.', 'error');
-                return;
-            }
-
-            localStorage.setItem('userRole', userRole);
-            showToast(welcomeMessage, 'success');
-            navigate(redirectPath);
-
-        }, 1500);
-    };
-
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-            <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-100 transition-all duration-300 hover:shadow-2xl">
-                <a className="flex items-center justify-center text-primary-700 text-4xl font-extrabold mb-10 transition-colors duration-300 hover:text-primary-800" href="javascript:void(0)" aria-label="Ir a la página de inicio de EduGestión 360">
-                    {/* Icono original de Font Awesome: fas fa-graduation-cap */}
-                    <i className="fas fa-graduation-cap mr-3 text-blue-500 text-4xl" aria-hidden="true"></i> {/* Añadimos text-4xl para el tamaño */}
-                    EduGestión 360
-                </a>
-                <h5 className="text-2xl font-semibold mb-8 text-gray-800">Bienvenido de nuevo</h5>
-
-                <form id="loginForm" className="space-y-6" onSubmit={handleSubmit} noValidate>
-                    <div className="text-left">
-                        <label htmlFor="emailInput" className="block text-gray-700 text-sm font-medium mb-2">Correo electrónico / Usuario</label>
-                        <input
-                            type="text"
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-gray-800 placeholder-gray-400"
-                            id="emailInput"
-                            placeholder="Ingresa tu correo o usuario"
-                            required
-                            aria-label="Ingresa tu correo o usuario"
-                            value={emailOrUsername}
-                            onChange={(e) => setEmailOrUsername(e.target.value)}
-                        />
-                    </div>
-                    <div className="text-left">
-                        <label htmlFor="passwordInput" className="block text-gray-700 text-sm font-medium mb-2">Contraseña</label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 pr-12 text-gray-800 placeholder-gray-400"
-                                id="passwordInput"
-                                placeholder="Ingresa tu contraseña"
-                                required
-                                aria-label="Ingresa tu contraseña"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <button
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-r-lg transition-colors duration-200"
-                                type="button"
-                                aria-label="Mostrar/ocultar contraseña"
-                                onClick={togglePasswordVisibility}
-                            >
-                                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-lg`} aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center">
-                            <input type="checkbox" className="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" id="rememberMe" />
-                            <label className="ml-2 block text-gray-900" htmlFor="rememberMe">Recordarme</label>
-                        </div>
-                        <a href="javascript:void(0)" className="text-primary-600 hover:underline hover:text-primary-700 transition-colors duration-200 font-medium" aria-label="¿Olvidaste tu contraseña?">¿Olvidaste tu contraseña?</a>
-                    </div>
-                    <button
-                        type="submit"
-                        className={`w-full bg-primary-700 text-white py-3.5 px-4 rounded-lg text-xl font-semibold hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl ${isLoading ? 'opacity-75 cursor-not-allowed' : ''} flex items-center justify-center`}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? (
-                            <>
-                                <span className="animate-spin h-5 w-5 mr-3 border-b-2 border-white rounded-full" role="status" aria-hidden="true"></span>
-                                Cargando...
-                            </>
-                        ) : (
-                            'Iniciar Sesión'
-                        )}
-                    </button>
-                </form>
-
-                <div className="mt-10 pt-6 border-t border-gray-200 text-gray-600 text-base">
-                    ¿Eres nuevo por aquí? <a href="javascript:void(0)" className="text-primary-600 hover:underline hover:text-primary-700 transition-colors duration-200 font-medium" aria-label="Registrarme en el sistema">Registrarme</a>
-                </div>
-            </div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+        <div className="text-center mb-8">
+          <i className="fas fa-graduation-cap text-primary-600 text-5xl mb-4"></i>
+          <h2 className="text-3xl font-bold text-gray-800">EduGestión 360</h2>
+          <p className="text-gray-600 mt-2">Inicia sesión en tu cuenta</p>
         </div>
-    );
-}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Correo Electrónico
+            </label>
+            <input
+              type="email"
+              id="email"
+              // Usar 'register' para registrar el input con react-hook-form
+              {...register('email')}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+              }`}
+              placeholder="tu@ejemplo.com"
+            />
+            {/* Mostrar mensaje de error si existe */}
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Contraseña
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                // Usar 'register' para registrar el input
+                {...register('password')}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 pr-10 ${
+                  errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                }`}
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              >
+                <i className={showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
+              </button>
+            </div>
+            {/* Mostrar mensaje de error si existe */}
+            {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-gray-900">
+                Recordarme
+              </label>
+            </div>
+            <a href="#" className="font-medium text-primary-600 hover:text-primary-500">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition duration-150 ease-in-out"
+          >
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default LoginPage;
-

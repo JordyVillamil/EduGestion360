@@ -1,13 +1,13 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react'; // <-- VERIFICA ESTAS IMPORTACIONES (useState, useCallback)
 import { BrowserRouter as Router, Routes, Route, Outlet, Link, Navigate } from 'react-router-dom';
 
 // Componentes de Layout
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Footer from './components/Layout/Footer';
-import Spinner from './components/UI/Spinner';
-import ToastContainer from './components/UI/ToastContainer';
+import Spinner from './components/UI/Spinner'; // <-- VERIFICA ESTA RUTA
+import ToastContainer from './components/UI/ToastContainer'; // <-- VERIFICA ESTA RUTA
 
 // Páginas y AuthWrapper
 import LoginPage from './pages/Auth/LoginPage';
@@ -20,27 +20,14 @@ import DirectivoDashboard from './pages/Dashboards/Directivo/DirectivoDashboard'
 // === Componente DashboardLayout ===
 const DashboardLayout = ({ toggleSidebar, isSidebarOpen, showToast, setShowGlobalSpinner }) => {
     return (
-        // Contenedor principal del layout: flexbox en columna, ocupa toda la altura de la vista
         <div className="flex flex-col min-h-screen">
-            {/* Header: fijo en la parte superior */}
             <Header onToggleSidebar={toggleSidebar} />
-
-            {/* Contenedor principal del contenido y sidebar: usa flex-grow para ocupar espacio restante */}
-            {/* pt-16 (64px) para dejar espacio al Header fijo */}
             <div className="flex flex-1 pt-16">
-                {/* Sidebar: fijo, flota sobre el contenido principal en pantallas grandes */}
                 <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
-
-                {/* Main Content Area: se expande para llenar el espacio, con margen izquierdo en desktop para el sidebar */}
-                {/* overflow-y-auto: permite el scroll si el contenido es más largo que la pantalla */}
-                {/* Añadido pb-20 para asegurar espacio para el Footer. Ajusta este valor si tu Footer es más alto. */}
                 <main className="flex-1 p-6 lg:ml-64 overflow-y-auto pb-20">
                     <Outlet />
                 </main>
             </div>
-
-            {/* Footer: siempre en la parte inferior */}
-            {/* Asegúrate de que el Footer no sea fijo para que el main lo empuje */}
             <Footer />
         </div>
     );
@@ -51,18 +38,19 @@ function App() {
     const [toasts, setToasts] = useState([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const showToast = (message, type = 'info') => {
+    // *** CRÍTICO: USA useCallback para estas funciones ***
+    const showToast = useCallback((message, type = 'info') => {
         const id = Date.now();
         setToasts(prevToasts => [...prevToasts, { id, message, type }]);
-    };
+    }, []); // <-- Dependencias vacías para estabilidad
 
-    const removeToast = (id) => {
+    const removeToast = useCallback((id) => {
         setToasts(prevToasts => prevToasts.filter(toast => toast.id !== id));
-    };
+    }, []); // <-- Dependencias vacías para estabilidad
 
-    const toggleSidebar = () => {
+    const toggleSidebar = useCallback(() => {
         setIsSidebarOpen(prev => !prev);
-    };
+    }, []); // <-- Dependencias vacías para estabilidad
 
     return (
         <Router>
@@ -70,11 +58,12 @@ function App() {
             {showGlobalSpinner && <Spinner />}
 
             <Routes>
-                {/* La ruta raíz redirige al login si no hay un rol de usuario, o al dashboard específico */}
+                {/* La ruta raíz "/" ahora también verifica 'isAuthenticated' */}
                 <Route
                     path="/"
                     element={
-                        localStorage.getItem('userRole') ? (
+                        // Asegúrate de que 'isAuthenticated' se establezca en el localStorage durante el login
+                        localStorage.getItem('isAuthenticated') === 'true' && localStorage.getItem('userRole') ? (
                             <Navigate to={`/dashboard/${localStorage.getItem('userRole')}`} replace />
                         ) : (
                             <LoginPage setShowGlobalSpinner={setShowGlobalSpinner} showToast={showToast} />
@@ -83,6 +72,7 @@ function App() {
                 />
                 <Route path="/login" element={<LoginPage setShowGlobalSpinner={setShowGlobalSpinner} showToast={showToast} />} />
 
+                {/* AuthWrapper como ruta padre, pasando las funciones estables */}
                 <Route element={<AuthWrapper showToast={showToast} setShowGlobalSpinner={setShowGlobalSpinner} />}>
                     <Route
                         path="/dashboard/*"
@@ -138,7 +128,6 @@ function App() {
                             </div>
                         } />
 
-                        {/* Ruta para 404 dentro del dashboard */}
                         <Route path="*" element={
                             <div className="flex flex-col items-center justify-center min-h-[calc(100vh-160px)] bg-white p-8 rounded-lg shadow-md">
                                 <h1 className="text-4xl font-bold text-gray-800 mb-4">404 - Página No Encontrada</h1>
@@ -151,7 +140,6 @@ function App() {
                     </Route>
                 </Route>
 
-                {/* Redirección para cualquier otra ruta no definida fuera del dashboard */}
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Router>

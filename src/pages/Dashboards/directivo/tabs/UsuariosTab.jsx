@@ -1,96 +1,143 @@
-// src/pages/Dashboards/directivo/tabs/UsuariosTab.jsx
-import React from 'react';
-import Card from '../../../../components/shared/Card'; // Ensure this path is correct
+// src/pages/Dashboards/Directivo/tabs/UsuariosTab.jsx
+import React, { useState } from 'react';
+import Card from '../../../../components/shared/Card';
+import NewUserModal from '../../../../components/Modals/NewUserModal';
+import EditUserModal from '../../../../components/Modals/EditUserModal'; // <-- IMPORTADO
 
-const UsuariosTab = ({ showToast, setShowGlobalSpinner }) => { // If you need props here, add them
-    const usuarios = [
-        { id: 1, nombre: 'Juan Martínez', usuario: 'jmartinez', email: 'j@m.com', rol: 'Docente', estado: 'Activo' },
-        { id: 2, nombre: 'Laura Torres', usuario: 'ltorres', email: 'l@t.com', rol: 'Directivo', estado: 'Activo' },
-        { id: 3, nombre: 'Carlos López', usuario: 'clopez', email: 'c@l.com', rol: 'Estudiante', estado: 'Bloqueado' },
-        { id: 4, nombre: 'María García', usuario: 'mgarcia', email: 'm@g.com', rol: 'Estudiante', estado: 'Activo' },
-        { id: 5, nombre: 'Pedro Pérez', usuario: 'pperez', email: 'p@p.com', rol: 'Padre', estado: 'Inactivo' },
-    ];
+const UsuariosTab = ({ showToast }) => { // Recibe showToast como prop
+  const [isNewUserModalOpen, setIsNewUserModalOpen] = useState(false);
+  const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false); // <-- NUEVO ESTADO
+  const [selectedUser, setSelectedUser] = useState(null); // <-- NUEVO ESTADO: para el usuario a editar
 
-    return (
-        // Main tab container with padding
-        <div className="p-4">
-            {/* Filter Section - Subtle background, rounded borders, and shadow */}
-            <div className="mb-8 bg-gray-100 p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-700 mb-4">Filtros de Usuarios</h3>
-                <div className="flex flex-wrap items-center gap-6">
-                    <div>
-                        <label htmlFor="roleFilter" className="block text-sm font-medium text-gray-700 mb-1">Rol:</label>
-                        <select id="roleFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
-                            <option>Todos</option>
-                            <option>Estudiante</option>
-                            <option>Docente</option>
-                            <option>Directivo</option>
-                            <option>Padre</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 mb-1">Estado:</label>
-                        <select id="statusFilter" className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-800 transition-all duration-200">
-                            <option>Todos</option>
-                            <option>Activo</option>
-                            <option>Inactivo</option>
-                            <option>Bloqueado</option>
-                        </select>
-                    </div>
-                    <button className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg">Aplicar Filtros</button>
-                    <button className="bg-success-600 hover:bg-success-700 text-white px-5 py-2.5 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg ml-auto">
-                        <i className="fas fa-user-plus mr-2"></i> Nuevo Usuario
-                    </button>
-                </div>
-            </div>
+  const [users, setUsers] = useState([
+    // Datos de usuarios de ejemplo. CAMBIADO: roles en minúsculas para coincidir con el esquema Yup.
+    { id: 1, name: 'Ana García', email: 'ana.garcia@example.com', role: 'estudiante' },
+    { id: 2, name: 'Carlos Díaz', email: 'carlos.diaz@example.com', role: 'docente' },
+    { id: 3, name: 'Laura Gómez', email: 'laura.gomez@example.com', role: 'directivo' },
+    { id: 4, name: 'Pedro Sánchez', email: 'pedro.sanchez@example.com', role: 'estudiante' },
+  ]);
 
-            <Card title="Usuarios del Sistema">
-                {/* Responsive table container with horizontal scroll */}
-                <div className="overflow-x-auto">
-                    {/* Table with Tailwind styles */}
-                    <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Nombre</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Email</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Rol</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-200">Estado</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {usuarios.map((user) => (
-                                <tr key={user.id} className="hover:bg-gray-50 transition-colors duration-150">
-                                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.nombre}</td>
-                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{user.rol}</td>
-                                    <td className="px-4 py-4 whitespace-nowrap text-sm">
-                                        {/* Badge for status with conditional Tailwind classes */}
-                                        <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${ // Adjusted padding
-                                            user.estado === 'Activo' ? 'bg-green-100 text-green-800' :
-                                            user.estado === 'Bloqueado' ? 'bg-red-100 text-red-800' :
-                                            'bg-gray-100 text-gray-800'
-                                        }`}>
-                                            {user.estado}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-4 whitespace-nowrap text-left text-base"> {/* Base text size for actions */}
-                                        {/* Action buttons with Tailwind styles */}
-                                        <button className="text-primary-600 hover:text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 mr-3 transition-colors duration-200"> {/* Adjusted margin and hover color */}
-                                            <i className="fas fa-edit"></i> Editar
-                                        </button>
-                                        <button className="text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"> {/* Adjusted hover color */}
-                                            <i className="fas fa-trash"></i> Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </Card>
-        </div>
-    );
+  const handleCreateUser = (newUserData) => {
+    console.log('Creando nuevo usuario:', newUserData);
+    setTimeout(() => {
+      // Asigna un ID simple para el ejemplo y añade el nuevo usuario
+      const newUser = { ...newUserData, id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1 };
+      setUsers((prevUsers) => [...prevUsers, newUser]);
+      showToast('Usuario creado con éxito', 'success');
+    }, 1000);
+  };
+
+  const handleEditUser = (updatedUserData) => { // <-- NUEVA FUNCIÓN
+    console.log('Editando usuario:', updatedUserData);
+    setTimeout(() => {
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id === updatedUserData.id ? { ...user, ...updatedUserData } : user))
+      );
+      showToast('Usuario actualizado con éxito', 'success');
+      setIsEditUserModalOpen(false); // Cerrar modal después de la edición
+      setSelectedUser(null); // Limpiar usuario seleccionado
+    }, 1000);
+  };
+
+  const handleDeleteUser = (id) => {
+    // Lógica para eliminar usuario (ej. llamada a API)
+    setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
+    showToast('Usuario eliminado', 'info');
+  };
+
+  const openEditModal = (user) => { // <-- NUEVA FUNCIÓN
+    setSelectedUser(user); // Establece el usuario que se va a editar
+    setIsEditUserModalOpen(true); // Abre el modal de edición
+  };
+
+  // Función auxiliar para capitalizar la primera letra del rol para la visualización en la tabla
+  const capitalizeRole = (role) => {
+    if (!role) return '';
+    return role.charAt(0).toUpperCase() + role.slice(1);
+  };
+
+  return (
+    <Card title="Gestión de Usuarios">
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setIsNewUserModalOpen(true)}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        >
+          <i className="fas fa-plus mr-2"></i> Crear Nuevo Usuario
+        </button>
+      </div>
+
+      {/* Tabla de usuarios */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nombre
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Correo
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Rol
+              </th>
+              <th scope="col" className="relative px-6 py-3">
+                <span className="sr-only">Acciones</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {/* CAMBIADO: Clases para el badge y uso de capitalizeRole */}
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                    ${user.role === 'estudiante' ? 'bg-blue-100 text-blue-800' : ''}
+                    ${user.role === 'docente' ? 'bg-green-100 text-green-800' : ''}
+                    ${user.role === 'directivo' ? 'bg-purple-100 text-purple-800' : ''}
+                    ${user.role === 'padre' ? 'bg-yellow-100 text-yellow-800' : ''}
+                  `}>
+                    {capitalizeRole(user.role)}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  {/* BOTÓN EDITAR QUE ABRE EL MODAL DE EDICIÓN */}
+                  <button onClick={() => openEditModal(user)} className="text-primary-600 hover:text-primary-900 mr-4">Editar</button>
+                  <button onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:text-red-900">Eliminar</button>
+                </td>
+              </tr>
+            ))}
+            {users.length === 0 && (
+              <tr>
+                <td colSpan="4" className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                  No hay usuarios registrados.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Renderiza el modal de nuevo usuario */}
+      <NewUserModal
+        isOpen={isNewUserModalOpen}
+        onOpenChange={setIsNewUserModalOpen}
+        onSubmit={handleCreateUser}
+      />
+
+      {/* Renderiza el modal de edición de usuario */}
+      {selectedUser && ( // Solo renderiza si hay un usuario seleccionado
+        <EditUserModal
+          isOpen={isEditUserModalOpen}
+          onOpenChange={setIsEditUserModalOpen}
+          onSubmit={handleEditUser}
+          userData={selectedUser} // Pasa los datos del usuario seleccionado
+        />
+      )}
+    </Card>
+  );
 };
 
 export default UsuariosTab;

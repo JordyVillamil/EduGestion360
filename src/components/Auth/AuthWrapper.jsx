@@ -1,47 +1,94 @@
 // src/components/Auth/AuthWrapper.jsx
-import React, { useEffect, useState } from 'react'; // Importamos useState para la simulación de carga
-import { useNavigate, Outlet } from 'react-router-dom'; // Importa Outlet
-import Spinner from '../UI/Spinner';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import Spinner from '../UI/Spinner'; // <-- VERIFICA ESTA RUTA
 
-// Este componente envuelve las rutas protegidas
-function AuthWrapper({ showToast, setShowGlobalSpinner }) { // Ya no necesita 'children' como prop
-    const navigate = useNavigate();
-    // En un caso real, esto vendría de un AuthContext o una llamada a API
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoadingAuth, setIsLoadingAuth] = useState(true); // Nuevo estado para simular la carga de autenticación
+function AuthWrapper({ showToast, setShowGlobalSpinner }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authCheckComplete, setAuthCheckComplete] = useState(false); // Nuevo estado para asegurar que la verificación inicial terminó
+  const redirectingRef = useRef(false); // Flag para asegurar que la redirección solo ocurre una vez
 
-    useEffect(() => {
-        // Simulación de verificación de autenticación
-        const token = localStorage.getItem('authToken'); // Asegúrate de usar 'authToken' aquí
-        if (token) {
-            setIsAuthenticated(true);
+  useEffect(() => {
+    // console.log("AuthWrapper useEffect 1: Comienza verificación. path:", location.pathname); // DEBUG
+
+    // Solo realiza la verificación si no estamos ya redirigiendo o si la verificación no ha terminado
+    if (redirectingRef.current || authCheckComplete) {
+      // console.log("AuthWrapper useEffect 1: Saltando verificación (ya redirigiendo o verificado)."); // DEBUG
+      // Asegúrate de que el spinner global esté apagado si ya terminamos o redirigimos
+      setShowGlobalSpinner(false);
+      return;
+    }
+
+    setIsLoadingAuth(true); // Activa el spinner global al inicio de la verificación
+    
+    // Simula una pequeña demora para la verificación (como una llamada a la API)
+    const authTimer = setTimeout(() => {
+      const storedAuthStatus = localStorage.getItem('isAuthenticated');
+      // console.log("AuthWrapper useEffect 1: Estado de autenticación localStorage:", storedAuthStatus); // DEBUG
+
+      if (storedAuthStatus === 'true') {
+        setIsAuthenticated(true);
+        // console.log("AuthWrapper: Autenticado."); // DEBUG
+      } else {
+        setIsAuthenticated(false);
+        // console.log("AuthWrapper: NO Autenticado."); // DEBUG
+
+        // Si no está autenticado Y NO estamos ya en la página de login, redirige
+        if (location.pathname !== '/' && location.pathname !== '/login') {
+          showToast('Por favor, inicia sesión para acceder.', 'warning');
+          navigate('/login', { replace: true }); // Redirección fuerte
+          redirectingRef.current = true; // Marca que ya estamos redirigiendo
+          // console.log("AuthWrapper: Redirigiendo a /login."); // DEBUG
         } else {
-            setIsAuthenticated(false);
+          // console.log("AuthWrapper: No autenticado, pero ya en / o /login. No redirigiendo de nuevo."); // DEBUG
         }
-        setIsLoadingAuth(false);
-    }, []);
+      }
+      setAuthCheckComplete(true); // Marca que la verificación inicial ha terminado
+      setIsLoadingAuth(false); // Desactiva la carga interna del AuthWrapper
+      setShowGlobalSpinner(false); // Asegúrate de ocultar el spinner global
+    }, 100); // Pequeña demora para simular la verificación
 
-    useEffect(() => {
-        if (!isLoadingAuth && !isAuthenticated) {
-            // Si no está autenticado y ya terminó de cargar, redirige al login
-            navigate('/');
-            showToast('Por favor, inicia sesión para acceder.', 'warning');
-            setShowGlobalSpinner(false); // Asegúrate de ocultar el spinner global
-        }
-    }, [isAuthenticated, isLoadingAuth, navigate, showToast, setShowGlobalSpinner]);
+    // Función de limpieza
+    return () => {
+      clearTimeout(authTimer);
+      // Solo resetear redirectingRef si el componente se desmonta COMPLETAMENTE
+      // y no es solo un re-render por cambio de ruta dentro del Outlet.
+      // Para este caso de un componente de Layout que envuelve rutas, mantenerlo puede ser mejor.
+      // Si el bucle persiste, podríamos considerar resetearlo aquí también.
+    };
+  }, [navigate, location.pathname, showToast, setShowGlobalSpinner, authCheckComplete]); // Dependencias
 
-    // Muestra un spinner mientras se verifica la autenticación
-    if (isLoadingAuth) {
-        return <Spinner />; // O un simple div de carga
+  // Este useEffect maneja solo la visibilidad del spinner global
+  const [isLoadingAuthInternal, setIsLoadingAuth] = useState(true); // Estado interno de carga
+  useEffect(() => {
+    if (isLoadingAuthInternal) {
+      setShowGlobalSpinner(true);
+    } else {
+      setShowGlobalSpinner(false);
     }
+  }, [isLoadingAuthInternal, setShowGlobalSpinner]);
 
-    // Si no está autenticado, no renderiza nada y confía en la redirección del useEffect
-    if (!isAuthenticated) {
-        return null;
-    }
 
-    // Si está autenticado, renderiza el Outlet, que mostrará las rutas anidadas
-    return <Outlet />; // Aquí se renderizarán los componentes de las rutas hijas
+  // Si la verificación no ha terminado O si ya hemos decidido redirigir
+  if (!authCheckComplete || redirectingRef.current) {
+    // Si la ruta actual es login o root, y no estamos autenticados,
+    // y no hemos terminado la verificación, mostramos un spinner global
+    // o simplemente esperamos, ya que el useEffect gestionará la redirección
+    return null; // El spinner global ya se maneja en App.jsx
+  }
+
+  // Si la verificación terminó y el usuario NO está autenticado
+  if (!isAuthenticated) {
+    // Si llegamos aquí, significa que la verificación terminó, el usuario no está autenticado,
+    // y no se ha redirigido aún (o ya estamos en /login).
+    // Dejamos que react-router-dom maneje el flujo de rutas.
+    return null; // O podrías mostrar un componente de "Acceso Denegado"
+  }
+
+  // Si la verificación terminó y el usuario está autenticado, renderiza las rutas hijas
+  return <Outlet />;
 }
 
 export default AuthWrapper;
