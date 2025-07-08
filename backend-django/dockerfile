@@ -1,0 +1,23 @@
+# edugestion360-fullstack/backend/Dockerfile
+# Usa una imagen base de Python oficial (compatible con Django y MySQL)
+FROM python:3.10-slim-buster
+
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Instala las dependencias necesarias para MySQL Client
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev pkg-config build-essential
+
+# Copia el archivo de requisitos e instala las dependencias de Python
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia todo el código fuente de tu aplicación al contenedor
+# (En desarrollo, el volumen montado sobreescribirá esto, pero es bueno para la construcción de imágenes)
+COPY . /app/
+
+# Expone el puerto que usará Gunicorn
+EXPOSE 8000
+
+# Comando por defecto para ejecutar Gunicorn (puede ser sobreescrito por docker-compose.yml)
+CMD ["gunicorn", "edugestion360_backend.wsgi:application", "--bind", "0.0.0.0:8000"]
