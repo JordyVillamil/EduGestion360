@@ -34,7 +34,8 @@ CORS_ALLOW_CREDENTIALS = True # Permite cookies, encabezados de autorización
 INSTALLED_APPS += [
     'corsheaders', # Para manejar CORS
     'rest_framework', # Para Django REST Framework
-    'rest_framework_simplejwt', # Para JWT
+    'rest_framework_simplejwt',
+    'users_app',# Para JWT
     # Aquí irán tus apps personalizadas más adelante
     # 'users_app', # Ejemplo de una app de usuarios
 ]
@@ -86,3 +87,5 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
+
+AUTH_USER_MODEL = 'users_app.User' 
