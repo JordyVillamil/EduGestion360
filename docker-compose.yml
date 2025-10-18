@@ -12,7 +12,7 @@ services:
       MYSQL_USER: django_user # Usuario para Django
       MYSQL_PASSWORD: django_password # Contraseña para el usuario de Django (¡Cambiar en producción!)
     ports:
-      - "3306:3306" # Mapea el puerto 3306 del contenedor al 3306 de tu máquina local
+      - "3307:3306" # Mapea el puerto 3306 del contenedor al 3306 de tu máquina local
     volumes:
       - db_data:/var/lib/mysql # Persistencia de datos de la base de datos
     healthcheck: # Comprobación de salud para esperar a que MySQL esté listo

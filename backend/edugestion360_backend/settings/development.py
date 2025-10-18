@@ -35,7 +35,9 @@ INSTALLED_APPS += [
     'corsheaders', # Para manejar CORS
     'rest_framework', # Para Django REST Framework
     'rest_framework_simplejwt',
-    'users_app',# Para JWT
+    'users_app',
+    'documents_app',
+    'academic_app',# Para JWT
     # Aquí irán tus apps personalizadas más adelante
     # 'users_app', # Ejemplo de una app de usuarios
 ]
@@ -89,3 +91,5 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'users_app.User' 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

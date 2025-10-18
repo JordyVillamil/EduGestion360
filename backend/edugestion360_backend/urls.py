@@ -17,6 +17,8 @@ Including another URLconf
 # edugestion360-fullstack/backend/edugestion360_backend/urls.py
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings # <--- ¡IMPORTA settings!
+from django.conf.urls.static import static # <--- ¡IMPORTA static!
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -26,7 +28,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # Para obtener tokens (login)
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Para refrescar tokens
-    path('api/', include('users_app.urls')), # Incluye todas las URLs de users_app bajo /api/
+    path('api/', include('users_app.urls')),
+    path('api/', include('documents_app.urls')),# Incluye todas las URLs de users_app bajo /api/
     # Aquí incluiremos las URLs de tus aplicaciones (ej. users_app)
     # path('api/', include('users_app.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
