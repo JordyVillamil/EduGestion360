@@ -4,7 +4,7 @@ from django.conf import settings
 
 class Curso(models.Model):
     """Representa un grupo o grado académico (ej. 5to A, 8vo B, Grado 10)."""
-    nombre = models.CharField(max_length=100, unique=True, verbose_name="Nombre del Curso")
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nombre del Curso")
     nivel = models.TextField(blank=True, null=True, verbose_name="nivel académico (ej. Primaria, Secundaria, Preparatoria)")
     
     # Relación opcional con Docente Tutor

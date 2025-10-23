@@ -37,7 +37,8 @@ INSTALLED_APPS += [
     'rest_framework_simplejwt',
     'users_app',
     'documents_app',
-    'academic_app',# Para JWT
+    'academic_app',
+    'grades_app'# Para JWT
     # Aquí irán tus apps personalizadas más adelante
     # 'users_app', # Ejemplo de una app de usuarios
 ]

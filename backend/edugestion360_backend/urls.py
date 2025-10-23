@@ -30,7 +30,9 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Para refrescar tokens
     path('api/', include('users_app.urls')),
     path('api/', include('documents_app.urls')),
-    path('api/', include('academic_app.urls')),# Incluye todas las URLs de users_app bajo /api/
+    path('api/', include('academic_app.urls')),
+    path('api/', include('grades_app.urls')),
+    # Incluye todas las URLs de users_app bajo /api/
     # Aquí incluiremos las URLs de tus aplicaciones (ej. users_app)
     # path('api/', include('users_app.urls')),
 ]
