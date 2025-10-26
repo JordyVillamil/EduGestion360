@@ -30,6 +30,19 @@ class UserMeView(APIView):
 class UserManagementViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all() # Obtiene todos los usuarios
     serializer_class = UserSerializer # Usamos el serializador UserSerializer
+    
+    def get_queryset(self):
+        # Comienza con todos los usuarios
+        queryset = User.objects.all()
+        
+        # Obtiene el parámetro 'role' de la URL
+        role = self.request.query_params.get('role')
+        
+        if role:
+            # Si se proveyó un rol, filtra el queryset
+            queryset = queryset.filter(role=role)
+            
+        return queryset
 
     def get_permissions(self):
         # Personaliza los permisos según la acción (GET, POST, PUT, DELETE)

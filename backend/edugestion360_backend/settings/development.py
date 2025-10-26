@@ -27,8 +27,11 @@ DATABASES = {
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-secret-key-for-dev')
 
 # Configuración de CORS
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
-CORS_ALLOW_CREDENTIALS = True # Permite cookies, encabezados de autorización
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',  # Puerto del frontend (Vite)
+    'http://127.0.0.1:5173',
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # INSTALLED_APPS adicionales para desarrollo
 INSTALLED_APPS += [
@@ -43,10 +46,6 @@ INSTALLED_APPS += [
     # 'users_app', # Ejemplo de una app de usuarios
 ]
 
-MIDDLEWARE += [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-]
 
 # Configuración de JWT Simple
 REST_FRAMEWORK = {

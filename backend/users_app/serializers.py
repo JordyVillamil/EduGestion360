@@ -1,40 +1,48 @@
-# edugestion360-fullstack/backend/users_app/serializers.py
+# users_app/serializers.py
+
 from rest_framework import serializers
-from .models import User # Importa tu modelo de usuario personalizado
+from .models import User 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-# Serializador para el registro de nuevos usuarios
+# Serializador para el registro (Tu código original - Está bien)
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True) # Campo de escritura única para la contraseña
-
+    password = serializers.CharField(write_only=True) 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'role'] # Campos que se esperan para el registro
-
+        fields = ['username', 'email', 'password', 'role'] 
     def create(self, validated_data):
-        # Crea el usuario y hashea la contraseña
         password = validated_data.pop('password', None)
         user = self.Meta.model(**validated_data)
         if password is not None:
-            user.set_password(password) # Hashea la contraseña
+            user.set_password(password)
         user.save()
         return user
 
-# Serializador para el inicio de sesión JWT (extiende el de simplejwt)
+# --- INICIO DE LA CORRECCIÓN ---
+
+# Serializador de Login (¡SIMPLIFICADO!)
+# Ahora espera 'username' y 'password' por defecto.
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    
+    # ¡HEMOS BORRADO EL MÉTODO 'validate' Y LOS CAMPOS 'email'/'username' DEL META!
+    # Ahora usará el 'username' por defecto.
+
     @classmethod
     def get_token(cls, user):
+        # (Este es tu código original, que añade el rol al token)
+        # Es perfecto y React lo necesita.
         token = super().get_token(user)
 
-        # Añade campos personalizados al payload del token
         token['username'] = user.username
         token['email'] = user.email
-        token['role'] = user.role # <--- ¡IMPORTANTE: AÑADE EL ROL AL TOKEN!
+        token['role'] = user.role # <--- ¡Esto es lo que necesita React!
 
         return token
 
-# Serializador para obtener detalles del usuario actual
+# --- FIN DE LA CORRECCIÓN ---
+
+# Serializador de detalles de usuario (Tu código original - Está bien)
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role'] # Campos que se devolverán
+        fields = ['id', 'username', 'email', 'role']
