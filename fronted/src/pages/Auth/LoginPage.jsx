@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'; // Importar useForm
 import { yupResolver } from '@hookform/resolvers/yup'; // Importar yupResolver
 import * as yup from 'yup'; // Importar yup
+import axios from 'axios'; // Importar axios
+import { jwtDecode } from 'jwt-decode'; // Importar jwt-decode
 
 // Definir el esquema de validación con Yup
 const loginSchema = yup.object().shape({
-  email: yup.string()
-    .email('El correo electrónico debe ser válido.') // Valida formato de email
-    .required('El correo electrónico es obligatorio.'), // Campo requerido
+  username: yup.string() // <-- CAMBIO AQUÍ
+    .required('El nombre de usuario es obligatorio.'), // <-- CAMBIO AQUÍ
   password: yup.string()
     .min(6, 'La contraseña debe tener al menos 6 caracteres.') // Mínimo 6 caracteres
     .required('La contraseña es obligatoria.'), // Campo requerido
@@ -26,31 +27,41 @@ const LoginPage = ({ setShowGlobalSpinner, showToast }) => {
 
   const onSubmit = async (data) => {
     setShowGlobalSpinner(true);
-    console.log('Datos de inicio de sesión:', data);
+    
+    // Define la URL de la API (ajusta si es necesario)
+    const API_URL = 'http://localhost:8000/api/login/';
 
     try {
-      // Simular una llamada a la API
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // 1. Realizar la llamada POST real al backend
+      const response = await axios.post(API_URL, data);
 
-      // Simular autenticación exitosa
-      // En un entorno real, la API te devolvería el rol del usuario
-      const userRole = data.email.includes('estudiante') ? 'estudiante'
-                     : data.email.includes('docente') ? 'docente'
-                     : data.email.includes('directivo') ? 'directivo'
-                     : 'estudiante'; // Rol por defecto si no coincide
+      // 2. Obtener los tokens de la respuesta
+      const { access, refresh } = response.data;
 
-      localStorage.setItem('isAuthenticated', 'true');
+      // 3. Decodificar el access token para obtener el rol
+      // (Asumiendo que tu Serializer de Token en Django añade el 'role')
+      const decodedToken = jwtDecode(access);
+      const userRole = decodedToken.role; // Extrae el rol del token
+
+      // 4. Guardar los tokens y el rol en localStorage
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
       localStorage.setItem('userRole', userRole);
+
       showToast('Inicio de sesión exitoso', 'success');
+      
+      // 5. Navegar al dashboard correspondiente
       navigate(`/dashboard/${userRole}`);
+
     } catch (error) {
-      showToast('Error al iniciar sesión. Credenciales inválidas.', 'error');
-      console.error('Error de autenticación:', error);
+      // Manejar errores (ej. 401 Unauthorized)
+      showToast('Error: Credenciales inválidas.', 'error');
+      console.error('Error de autenticación:', error.response?.data || error.message);
     } finally {
       setShowGlobalSpinner(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
@@ -65,18 +76,21 @@ const LoginPage = ({ setShowGlobalSpinner, showToast }) => {
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Correo Electrónico
             </label>
-            <input
-              type="email"
-              id="email"
-              // Usar 'register' para registrar el input con react-hook-form
-              {...register('email')}
-              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
-              }`}
-              placeholder="tu@ejemplo.com"
-            />
-            {/* Mostrar mensaje de error si existe */}
-            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+            <div>
+  <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1"> 
+    Nombre de Usuario
+  </label>
+  <input
+    type="text"
+    id="username"
+    {...register('username')}
+    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+      errors.username ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+    }`}
+    placeholder="tu-nombre-de-usuario"
+  />
+  {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>}
+</div>
           </div>
 
           <div>
