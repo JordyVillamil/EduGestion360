@@ -3,7 +3,7 @@
 **EduGestión 360** es una plataforma web full-stack e integral de gestión académica, diseñada para centralizar y optimizar la comunicación y los procesos entre directivos, docentes y estudiantes. El proyecto está 100% contenedorizado con Docker.
 
 ![Demo de EduGestión 360](docs/demo.gif)
-*(Recomendación: Graba un GIF corto mostrando el login del Docente, la creación de una nota, y luego el login del Estudiante viendo esa nota. Súbelo a GitHub y enlaza aquí.)*
+
 
 ---
 
