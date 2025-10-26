@@ -124,6 +124,6 @@ Este proyecto está diseñado para ejecutarse con Docker.
 
 ## Autor
 
-* **[Jordy Fabian Villamil Letrado]**
+* **Jordy Fabian Villamil Letrado**
 * [LinkedIn](https://www.linkedin.com/in/jordy-fabian-villamil-letrado-32378b232/)
 * [Portafolio web](https://jordyvillamil.github.io/#contactame)
