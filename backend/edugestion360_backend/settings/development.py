@@ -30,6 +30,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-secret-key-fo
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # Puerto del frontend (Vite)
     'http://127.0.0.1:5173',
+    'http://localhost:5174',  # Puerto alternativo de Vite
+    'http://127.0.0.1:5174',
 ]
 CORS_ALLOW_CREDENTIALS = True
 

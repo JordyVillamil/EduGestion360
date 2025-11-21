@@ -8,6 +8,7 @@ import Sidebar from './components/Layout/Sidebar';
 import Footer from './components/Layout/Footer';
 import Spinner from './components/UI/Spinner'; // <-- VERIFICA ESTA RUTA
 import ToastContainer from './components/UI/ToastContainer'; // <-- VERIFICA ESTA RUTA
+import AnimatedBackground from './components/shared/AnimatedBackground';
 
 // Páginas y AuthWrapper
 import LoginPage from './pages/Auth/LoginPage';
@@ -15,19 +16,18 @@ import AuthWrapper from './components/Auth/AuthWrapper';
 // Importa tus dashboards
 import EstudianteDashboard from './pages/Dashboards/Estudiante/EstudianteDashboard';
 import DocenteDashboard from './pages/Dashboards/Docente/DocenteDashboard';
-import DirectivoDashboard from './pages/Dashboards/Directivo/DirectivoDashboard';
+import DirectivoDashboard from './pages/Dashboards/directivo/DirectivoDashboard';
 
 // === Componente DashboardLayout ===
 const DashboardLayout = ({ toggleSidebar, isSidebarOpen, showToast, setShowGlobalSpinner }) => {
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen relative overflow-x-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+            <AnimatedBackground />
             <Header onToggleSidebar={toggleSidebar} />
-            <div className="flex flex-1 pt-16">
-                <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
-                <main className="flex-1 p-6 lg:ml-64 overflow-y-auto pb-20">
-                    <Outlet />
-                </main>
-            </div>
+            <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+            <main className="flex-1 pt-20 p-6 overflow-y-auto pb-20 w-full relative z-10">
+                <Outlet />
+            </main>
             <Footer />
         </div>
     );

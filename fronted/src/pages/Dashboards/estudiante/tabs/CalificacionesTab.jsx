@@ -48,6 +48,8 @@ const CalificacionesTab = ({ showToast, setShowGlobalSpinner }) => {
           errorMsg = err.message;
         } else if (err.response?.status === 403) {
           errorMsg = 'No tienes permiso para ver este recurso.';
+        } else if (err.response?.data) {
+          errorMsg = JSON.stringify(err.response.data);
         }
         setError(errorMsg);
         if (showToast) showToast(errorMsg, 'error');

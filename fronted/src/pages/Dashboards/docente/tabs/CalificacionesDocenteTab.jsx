@@ -131,7 +131,12 @@ const CalificacionesDocenteTab = ({ showToast, setShowGlobalSpinner }) => {
       let errorMsg = 'Error al guardar la calificación.';
       if (err.response?.data) {
         // Si el backend envía detalles del error (ej. validación)
-        errorMsg = Object.values(err.response.data).join(' ');
+        const errors = err.response.data;
+        if (typeof errors === 'object') {
+          errorMsg = Object.entries(errors).map(([key, value]) => `${key}: ${value}`).join(', ');
+        } else {
+          errorMsg = String(errors);
+        }
       }
       if (showToast) showToast(errorMsg, 'error');
     } finally {

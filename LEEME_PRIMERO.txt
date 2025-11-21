@@ -1,0 +1,114 @@
+============================================================
+  🎉 ¡TU APLICACIÓN ESTÁ LISTA PARA PROBAR!
+============================================================
+
+📋 PASOS PARA INICIAR:
+
+1. ✅ INICIA DOCKER DESKTOP
+   - Abre Docker Desktop desde el menú de inicio de Windows
+   - Espera a que el ícono deje de parpadear
+   - Verifica que diga "Docker Desktop is running"
+
+2. ✅ EJECUTA EL SCRIPT DE INICIO
+   Haz doble clic en:
+   
+   📁 iniciar-app.bat
+   
+   Este script hará AUTOMÁTICAMENTE:
+   - Verificar Docker
+   - Iniciar el backend (Django + MySQL)
+   - Instalar dependencias del frontend (si es necesario)
+   - Iniciar el frontend (React + Vite)
+   - Abrir tu navegador
+
+3. ✅ CREA USUARIOS DE PRUEBA
+   Después de que todo esté corriendo, ejecuta:
+   
+   📁 crear-usuarios.bat
+   
+   Esto creará:
+   - estudiante1 / 123456
+   - docente1    / 123456
+   - directivo1  / 123456
+
+4. ✅ ACCEDE A LA APLICACIÓN
+   Tu navegador se abrirá automáticamente en:
+   http://localhost:5173
+   
+   También puedes acceder a:
+   - Backend API: http://localhost:8000
+   - Admin Django: http://localhost:8000/admin/
+
+============================================================
+  🎨 CARACTERÍSTICAS PARA PROBAR
+============================================================
+
+✨ EN EL LOGIN:
+- Badge verde "✓ Servidor conectado" cuando todo funciona
+- Campos de entrada grandes y bien definidos
+- Validación en tiempo real
+- Animaciones de fondo
+
+✨ NAVBAR:
+- Botón hamburguesa para abrir el menú (todas las pantallas)
+- Notificaciones con badge animado
+- Dropdown de perfil con cambio de rol
+- Diseño grande y moderno
+
+✨ MENÚ LATERAL:
+- Se despliega desde la izquierda
+- No ocupa espacio permanente
+- Diseño moderno con gradientes
+- Consejo del día animado
+
+✨ DASHBOARDS:
+- Diferentes vistas por rol
+- Calificaciones (estudiante y docente)
+- Navegación entre pestañas
+- Tarjetas con estadísticas
+
+============================================================
+  🐛 SI ALGO NO FUNCIONA
+============================================================
+
+❌ "Docker no responde"
+   → Reinicia Docker Desktop
+
+❌ "Puerto 8000 en uso"
+   → Ejecuta: netstat -ano | findstr :8000
+   → Cierra el proceso que lo usa
+
+❌ "Network Error en login"
+   → Verifica: docker ps
+   → Debe mostrar 2 contenedores corriendo
+
+❌ Otros problemas
+   → Lee: INICIAR_APLICACION.md
+   → Lee: docs/SOLUCION_NETWORK_ERROR.md
+
+============================================================
+  📞 COMANDOS ÚTILES
+============================================================
+
+Ver logs del backend:
+  docker-compose logs -f backend
+
+Detener todo:
+  📁 detener-app.bat
+
+Reiniciar:
+  📁 iniciar-app.bat
+
+Ver contenedores activos:
+  docker ps
+
+Acceder a la base de datos:
+  docker-compose exec db mysql -u django_user -pdjango_password edugestion360_db
+
+============================================================
+
+¡LISTO! 🚀 Tu aplicación EduGestión 360 está lista para usar.
+
+Abre Docker Desktop y ejecuta: iniciar-app.bat
+
+============================================================

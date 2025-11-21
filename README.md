@@ -1,9 +1,65 @@
-# EduGestión 360
+# EduGestión 360 🎓
 
 **EduGestión 360** es una plataforma web full-stack e integral de gestión académica, diseñada para centralizar y optimizar la comunicación y los procesos entre directivos, docentes y estudiantes. El proyecto está 100% contenedorizado con Docker.
 
-![Demo de EduGestión 360](docs/demo.gif)
+---
 
+## 🚀 Inicio Rápido
+
+### Opción 1: Script Automático (Recomendado para Windows)
+
+Simplemente haz doble clic en:
+```
+📁 iniciar-app.bat
+```
+
+Este script:
+- ✅ Verifica que Docker esté corriendo
+- ✅ Inicia el backend automáticamente
+- ✅ Inicia el frontend automáticamente
+- ✅ Abre tu navegador en http://localhost:5173
+
+**Después del primer uso, ejecuta:**
+```
+📁 crear-usuarios.bat
+```
+Para crear usuarios de prueba (estudiante1, docente1, directivo1 / password: 123456)
+
+### Opción 2: Manual
+
+```bash
+# 1. Inicia Docker Desktop
+
+# 2. Terminal 1 - Backend
+docker-compose up --build
+
+# 3. Terminal 2 - Frontend
+cd fronted
+npm install
+npm run dev
+
+# 4. Abre http://localhost:5173
+```
+
+📖 **Guía completa:** Ver [INICIAR_APLICACION.md](INICIAR_APLICACION.md)
+
+---
+
+## 📱 Acceder a la Aplicación
+
+| Servicio | URL | Descripción |
+|----------|-----|-------------|
+| **Frontend** | http://localhost:5173 | Interfaz de usuario React |
+| **Backend API** | http://localhost:8000 | API REST Django |
+| **Admin Django** | http://localhost:8000/admin/ | Panel de administración |
+| **Base de datos** | localhost:3307 | MySQL (usuario: django_user) |
+
+### 🔐 Credenciales de Prueba
+
+Después de ejecutar `crear-usuarios.bat`:
+- **Estudiante:** `estudiante1` / `123456`
+- **Docente:** `docente1` / `123456`
+- **Directivo:** `directivo1` / `123456`
 
 ---
 
@@ -44,14 +100,44 @@ Este proyecto demuestra un flujo de trabajo full-stack moderno, desde el desarro
 
 ---
 
-## Características Principales
+## ✨ Características Principales
 
-* 🔐 **Autenticación Segura:** Sistema de Login y Registro basado en roles (Estudiante, Docente, Directivo).
-* 👨‍🎓 **Portal del Estudiante:** Dashboard para consultar calificaciones en tiempo real.
-* 👩‍🏫 **Panel del Docente:** Interfaz para crear, leer y gestionar calificaciones por estudiante y materia.
-* 📊 **Panel del Directivo (En desarrollo):** Gestión de usuarios (CRUD) y visualización de estadísticas globales.
-* 🧱 **API RESTful:** Endpoints modulares y seguros para gestionar Usuarios, Cursos, Materias y Calificaciones.
-* 🐳 **100% Contenerizado:** El proyecto completo (React, Django, MySQL) se levanta con un solo comando gracias a Docker Compose.
+### 🎨 Frontend Moderno
+* ✅ **UI/UX Mejorada:** Diseño moderno con animaciones fluidas y fondo animado
+* ✅ **Navbar Responsive:** Barra de navegación adaptable con indicadores de estado
+* ✅ **Menú Lateral Desplegable:** Navegación intuitiva que no ocupa espacio permanente
+* ✅ **Formularios Validados:** Campos con validación en tiempo real y mensajes de error claros
+* ✅ **Indicador de Conexión:** Badge que muestra el estado del servidor en tiempo real
+* ✅ **Notificaciones Toast:** Sistema de notificaciones elegante y no intrusivo
+
+### 🔐 Sistema de Autenticación Robusto
+* ✅ **JWT Seguro:** Autenticación con tokens Access y Refresh
+* ✅ **Roles Granulares:** Estudiante, Docente, Directivo con permisos específicos
+* ✅ **Cambio de Rol Dinámico:** Interfaz que se adapta según el rol activo
+* ✅ **Sesiones Persistentes:** Opción "Recordarme" para mantener sesión
+
+### 📊 Dashboards por Rol
+* 👨‍🎓 **Portal del Estudiante:** 
+  - Ver calificaciones en tiempo real
+  - Promedios por materia y general
+  - Historial académico detallado
+  
+* 👩‍🏫 **Panel del Docente:**
+  - Crear y gestionar calificaciones
+  - Filtrar por materia y curso
+  - Lista de estudiantes con formularios rápidos
+  
+* 💼 **Panel del Directivo:**
+  - Gestión completa de usuarios (CRUD)
+  - Estadísticas globales
+  - Reportes y análisis
+
+### 🛠️ Características Técnicas
+* ✅ **API RESTful Completa:** Endpoints modulares y seguros
+* ✅ **Manejo de Errores Mejorado:** Mensajes descriptivos y soluciones sugeridas
+* ✅ **CORS Configurado:** Comunicación segura entre frontend y backend
+* ✅ **Docker Compose:** Toda la infraestructura en contenedores
+* ✅ **Base de Datos Persistente:** Datos preservados entre reinicios
 
 ---
 
@@ -68,52 +154,87 @@ Este proyecto demuestra un flujo de trabajo full-stack moderno, desde el desarro
 
 ---
 
-## 🚀 Cómo Ejecutar Localmente
+## 🛠️ Gestión de la Aplicación
+
+### Detener la Aplicación
+```bash
+# Usando el script (Windows)
+📁 detener-app.bat
+
+# O manualmente
+docker-compose stop
+```
+
+### Reiniciar después del primer uso
+```bash
+# Solo necesitas:
+📁 iniciar-app.bat
+
+# El script verificará todo automáticamente
+```
+
+### Ver logs del backend
+```bash
+docker-compose logs -f backend
+```
+
+### Acceder a la base de datos
+```bash
+docker-compose exec db mysql -u django_user -pdjango_password edugestion360_db
+```
+
+---
+
+## 🐛 Solución de Problemas
+
+Si encuentras el error "Network Error":
+1. Verifica que Docker Desktop esté ejecutándose
+2. Ejecuta: `docker ps` para ver los contenedores activos
+3. Consulta: [docs/SOLUCION_NETWORK_ERROR.md](docs/SOLUCION_NETWORK_ERROR.md)
+
+Otros problemas comunes:
+- **Puerto ocupado:** Ver [INICIAR_APLICACION.md](INICIAR_APLICACION.md) sección "Solución de Problemas"
+- **Dependencias del frontend:** `npm install --legacy-peer-deps`
+- **Reconstruir contenedores:** `docker-compose build --no-cache`
+
+---
+
+## 📚 Documentación Adicional
+
+- 📖 [Guía completa de inicio](INICIAR_APLICACION.md)
+- 🔧 [Solución Network Error](docs/SOLUCION_NETWORK_ERROR.md)
+- 🎨 [Mejoras de UI implementadas](docs/MEJORAS_UI.md) (si existe)
+
+---
+
+## 🚀 Cómo Ejecutar Localmente (Detallado)
 
 Este proyecto está diseñado para ejecutarse con Docker.
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/](https://github.com/)[TU_USUARIO_GITHUB]/edugestion360-fullstack.git
+    git clone https://github.com/JordyVillamil/edugestion360-fullstack.git
     cd edugestion360-fullstack
     ```
 
-2.  **Configurar Variables de Entorno:**
-    Crea un archivo `.env` en la raíz del proyecto. Debe contener las credenciales de la base de datos y la configuración de Django:
-
-    ```env
-    # Variables de la Base de Datos
-    DATABASE_NAME=edugestion_db
-    DATABASE_USER=edugestion_user
-    DATABASE_PASSWORD=edugestion_pass
-    DATABASE_HOST=db
-    DATABASE_PORT=3306
-
-    # Variables de Django
-    DJANGO_DEBUG=True
-    DJANGO_SECRET_KEY=tu_secret_key_aqui_(puedes_generar_una_larga_y_aleatoria)
-    DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-
-    # Variables de CORS (Apunta a tu frontend de Vite)
-    CORS_ALLOWED_ORIGINS=http://localhost:5173,[http://127.0.0.1:5173](http://127.0.0.1:5173)
-    ```
+2.  **Asegurarse de que Docker Desktop esté corriendo**
 
 3.  **Construir y Levantar los Contenedores:**
-    Este comando construirá las imágenes de React y Django, e iniciará todos los servicios.
     ```bash
-    docker compose up --build -d
+    docker-compose up --build
     ```
 
-4.  **Ejecutar Migraciones:**
-    Aplica el esquema de la base de datos.
+4.  **En otra terminal, instalar dependencias del frontend:**
     ```bash
-    docker compose exec backend python manage.py migrate
+    cd fronted
+    npm install
+    npm run dev
     ```
 
-5.  **Crear un Superusuario (Opcional):**
-    Para acceder al Admin de Django (`http://localhost:8000/admin/`).
+5.  **Crear usuarios de prueba (opcional):**
     ```bash
-    docker compose exec backend python manage.py createsuperuser
+    docker-compose exec backend python manage.py shell
+    # Luego ejecuta el código de crear-usuarios.bat
     ```
 
 6.  **¡Listo!**

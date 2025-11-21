@@ -1,46 +1,85 @@
 // src/components/UI/Toast.jsx
 import React, { useEffect, useState } from 'react';
-// No necesitamos importar Toast.css si los estilos son solo de Tailwind o se manejan globalmente.
-// Si tienes reglas muy específicas y no quieres moverlas a global.css, puedes mantenerlo,
-// pero idealmente Tailwind debería reemplazar la mayoría de los estilos.
 
 function Toast({ id, message, type, onClose }) {
     const [isVisible, setIsVisible] = useState(true);
+    const [progress, setProgress] = useState(100);
 
     useEffect(() => {
+        // Animación de progreso
+        const progressInterval = setInterval(() => {
+            setProgress(prev => Math.max(0, prev - 2));
+        }, 100);
+
         const timer = setTimeout(() => {
             setIsVisible(false);
             setTimeout(() => onClose(id), 300);
         }, 5000);
+
         return () => {
             clearTimeout(timer);
+            clearInterval(progressInterval);
         };
     }, [id, onClose]);
 
-    // Clases Tailwind para los tipos de toast
-    const typeClasses = {
-        info: 'bg-blue-500 text-white',
-        success: 'bg-green-500 text-white',
-        warning: 'bg-yellow-400 text-gray-800', // Texto oscuro para fondo claro
-        error: 'bg-red-600 text-white',
+    const typeConfig = {
+        info: {
+            bg: 'bg-info-500',
+            icon: 'fa-info-circle',
+            iconBg: 'bg-info-600',
+            progressBg: 'bg-info-700'
+        },
+        success: {
+            bg: 'bg-success-500',
+            icon: 'fa-check-circle',
+            iconBg: 'bg-success-600',
+            progressBg: 'bg-success-700'
+        },
+        warning: {
+            bg: 'bg-warning-500',
+            icon: 'fa-exclamation-triangle',
+            iconBg: 'bg-warning-600',
+            progressBg: 'bg-warning-700'
+        },
+        error: {
+            bg: 'bg-red-500',
+            icon: 'fa-times-circle',
+            iconBg: 'bg-red-600',
+            progressBg: 'bg-red-700'
+        },
     };
 
-    const fadeClass = isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'; // Animación simple
+    const config = typeConfig[type] || typeConfig.info;
+    const fadeClass = isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full';
 
     return (
         <div
-            className={`flex items-center justify-between p-4 rounded-lg shadow-md mb-2 transition-all duration-300 ease-out ${typeClasses[type] || typeClasses.info} ${fadeClass}`}
+            className={`relative flex items-start p-4 rounded-xl shadow-xl mb-3 transition-all duration-300 ease-out transform ${config.bg} text-white ${fadeClass} animate-slideInRight overflow-hidden`}
             role="alert"
             aria-live="assertive"
             aria-atomic="true"
-            style={{ minWidth: '250px' }} // Tailwind no tiene un min-width directo en clases, puedes ponerlo inline o en global.css si es recurrente
+            style={{ minWidth: '300px', maxWidth: '400px' }}
         >
-            <div className="flex-grow text-sm font-medium">
+            {/* Barra de progreso */}
+            <div 
+                className={`absolute bottom-0 left-0 h-1 ${config.progressBg} transition-all duration-100 ease-linear`}
+                style={{ width: `${progress}%` }}
+            ></div>
+
+            {/* Icono */}
+            <div className={`flex-shrink-0 w-10 h-10 ${config.iconBg} rounded-lg flex items-center justify-center mr-3 shadow-lg animate-scaleIn`}>
+                <i className={`fas ${config.icon} text-lg`}></i>
+            </div>
+
+            {/* Mensaje */}
+            <div className="flex-grow text-sm font-medium pr-2">
                 {message}
             </div>
+
+            {/* Botón de cerrar */}
             <button
                 type="button"
-                className="ml-4 p-1 rounded-md hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+                className="flex-shrink-0 ml-2 p-1.5 rounded-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-200 transform hover:scale-110 active:scale-95"
                 aria-label="Cerrar"
                 onClick={() => setIsVisible(false)}
             >

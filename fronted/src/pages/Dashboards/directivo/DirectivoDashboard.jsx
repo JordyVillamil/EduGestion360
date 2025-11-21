@@ -45,7 +45,7 @@ const DirectivoDashboard = ({ showToast, setShowGlobalSpinner }) => {
           <button
             key={tab.id}
             className={`
-              flex-shrink-0 px-6 py-3 text-base font-semibold whitespace-nowrap
+              flex-shrink-0 px-6 py-3 text-lg font-semibold whitespace-nowrap
               ${activeTab === tab.id
                 ? 'border-b-3 border-primary-600 text-primary-700' // Stronger active indicator
                 : 'text-gray-600 hover:text-primary-700 hover:border-primary-300' // Hover color to primary
